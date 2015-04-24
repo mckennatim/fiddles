@@ -1,6 +1,6 @@
 ### exercise: find max in array, 
 #### tags: [document.getElement, apply, slice]
-<a href="/fiddles/index.html">[back to fiddles]</a>
+<a href="../../">[back to fiddles]</a>
 
 The html code:
 

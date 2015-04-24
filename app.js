@@ -79,7 +79,8 @@ app.directive('sbFileList', function (Data, byTagFilter, $filter) {
 
 app.filter('byTag', function(){
 	return function(input, tag){
-		if (tag=="--unfiltered--"){return input}
+		console.log(tag)
+		if (tag=="--unfiltered--" || tag==undefined){return input}
 		return input.filter(function(e){
 			return (e.tags.indexOf(tag)>-1)
 		})

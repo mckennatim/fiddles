@@ -1,6 +1,6 @@
 ### exercise: ng select and dropdown components, 
 #### tags: ["isoloate scope & = @", "directives", "ngOptions", "select", "dropdown", "split" ]
-<a href="/fiddles/index.html">[back to fiddles]</a>
+<a href="../../">[back to fiddles]</a>
 
 Directives
 

@@ -1,4 +1,4 @@
 ### exercises: closure
-<a href="/fiddles/index.html">[back to fiddles]</a>
+<a href="../../">[back to fiddles]</a>
 
 

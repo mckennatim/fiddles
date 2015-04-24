@@ -3,7 +3,11 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title></title>
+    <meta name="description" content="markdown directive as element attribute">
+    <meta property="og:type" content="website">
+    <meta property="og:tags" content='["markdown", "showdown"]'>
+	<title>ng-markdown</title>
+
 	<link rel="stylesheet" href="//cdn.jsdelivr.net/foundation/4.1.2/css/foundation.min.css" /> 
 	<style>
 	pre {
@@ -43,6 +47,7 @@ app.directive('markdown', function () {
 	</script>
 </head>
 <body>
+<a href="../../">back to fiddles</a>
 <div ng-app="myApp" data-markdown>
 # Hello There
 This is [an example](http://example.com/ "I'm the title") of an inline link.

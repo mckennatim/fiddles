@@ -4,7 +4,7 @@
 		<!-- <sb-dd ddata=tagSet upd="applyFilter(val)"></sb-dd> -->
 	</div>
 	<ul class="list group" >
-		<li ng-repeat="pg in jstr | orderBy:'-type' | byTag: currTag track by $index" class="list-group-item">
+		<li ng-repeat="pg in jstr | orderBy: ['-type','title'] | byTag: currTag track by $index" class="list-group-item">
 			<a href="{{url}}{{pg.url}}">{{pg.title}}</a><span> {{pg.type}}</span>
 			<span class="tags"> tags:
 				<span ng-repeat="tag in pg.tags track by $index" class="tag">{{tag}}</span>

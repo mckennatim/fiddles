@@ -1,4 +1,6 @@
   <meta name="description" content="Checking online status in AngularJS app" />
+    <meta property="og:type" content="website">
+    <meta property="og:tags" content='["$broadcast", "interceptors", "$watch", "$interval", "$window.onfocus", "polling", "$rootScope"]'>
   <title>ng-online</title>
   <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
   <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">  
@@ -7,6 +9,7 @@
   <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.10.0/ui-bootstrap-tpls.min.js"></script>
   <script src="main.js"></script>
 <body ng-app="App">
+<a href="../../">back to fiddles</a>
 <div ng-controller="AppController">    
     <span class="glyphicon glyphicon-signal" ng-show="inet.online"></span>
     <span class="glyphicon glyphicon-ban-circle" ng-show="!inet.online"></span>
