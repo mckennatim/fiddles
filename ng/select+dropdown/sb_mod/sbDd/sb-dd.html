@@ -1,0 +1,9 @@
+
+<!-- 	<sb-dd inarr=dd.inarr outval="valIs(val)" sblabel="{{dd.label}}" astr="my dog has fleas"></sb-dd> -->
+<div class="dropdown">
+    <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">{{sblabel}} <span class="caret"></span>
+    </button>{{astr}}{{bstr}}
+    <ul class="dropdown-menu" role="menu">
+        <li ng-repeat="val in inarr" ng-click="valChoice(val)">{{val}}</li>
+    </ul>
+</div>

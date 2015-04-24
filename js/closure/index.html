@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Understanding Closure (+async closure)">
+    <meta property="og:type" content="website">
+    <meta property="og:tags" content='["closure", "document.querySelectorAll", "promises", "IIFE"]'>
+	<title>closure</title>
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css"> 
+  <link rel="stylesheet" href="style.css"> 
+  <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.0-rc.0/angular.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.13/angular-ui-router.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.12.0/ui-bootstrap-tpls.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/showdown/0.3.1/showdown.min.js"></script>
+  <script src="app.js"></script>
+</head>
+<script type="text/javascript">
+function sayHello2(name) {
+	var text = 'Hello ' + name; // local variable
+	var sayAlert = function() {
+		console.log(text);
+	}
+	return sayAlert;
+}
+
+var say2 = sayHello2('fred')
+
+say2();
+</script>
+
+<body ng-app="App">
+<sb-md  mdfile="README.md"></sb-md>
+<div>
+	<h4>click on letter</h4>
+	bitems: <span class="bitems">a  </span>
+	<span class="bitems">b  </span>
+	<span class="bitems">c  </span>
+	<span class="bitems">d  </span>
+	<span class="bitems">e  </span>
+	<span class="bitems">f  </span>
+	<span id="badresp"></span><br>
+	items: <span class="items">a  </span>
+	<span class="items">b  </span>
+	<span class="items">c  </span>
+	<span class="items">d  </span>
+	<span class="items">e  </span>
+	<span class="items">f  </span>	
+	<span id="resp"></span>
+</div>
+<sb-md>
+#### ex1: closure - adding event listeners to [dom](#sol1) elements
+Using these selectors:
+
+    var items = document.querySelectorAll('.items');
+    var bitems = document.querySelectorAll('.bitems');
+    var resp = document.getElementById('resp')
+    var badresp = document.getElementById('badresp')
+
+The problem:
+   Adding an event listener that fires after the for loop runs loses track of the index and doesn't fire till the loop gets to 5
+
+    for (var i = 0, max = bitems.length; i < max; i++) {
+        var element = bitems[i];
+        element.addEventListener('click', (function() {
+            console.log('you clicked on element number ' + i);
+            badresp.innerHTML = 'you clicked on element number ' + i;
+        }));
+    }  
+
+<span id="sol1">The solution:</span>
+   Return a function
+
+    var items = document.querySelectorAll('.items');
+    var resp = document.getElementById('resp')
+    for (var i = 0, max = items.length; i < max; i++) {
+        var element = items[i];
+        element.addEventListener('click', (function(i) {
+            return function() {
+                console.log('you clicked on element number ' + i);
+                resp.innerHTML = 'you clicked on element number ' + i
+            };
+        }(i)));
+    }
+</sb-md>
+
+<script>
+	var items = document.querySelectorAll('.items');
+	var bitems = document.querySelectorAll('.bitems');
+	var resp = document.getElementById('resp')
+	var badresp = document.getElementById('badresp')
+	for (var i = 0, max = bitems.length; i < max; i++) {
+		var element = bitems[i];
+		element.addEventListener('click', (function() {
+			console.log('you clicked on element number ' + i);
+			badresp.innerHTML = 'you clicked on element number ' + i;
+		}));
+	}
+	for (var i = 0, max = items.length; i < max; i++) {
+		var element = items[i];
+		element.addEventListener('click', (function(i) {
+			return function() {
+				console.log('you clicked on element number ' + i);
+				resp.innerHTML = 'you clicked on element number ' + i
+			};
+		}(i)));
+	}
+var globalVar = "xyz";
+console.log('closure - two ways of calling functions');
+console.log('directly');
+(function outerFunc(outerArg) {
+	var outerVar = 'a';
+	(function innerFunc(innerArg) {
+		var innerVar = 'b';
+		console.log(
+			"outerArg = " + outerArg + "\n" +
+			"innerArg = " + innerArg + "\n" +
+			"outerVar = " + outerVar + "\n" +
+			"innerVar = " + innerVar + "\n" +
+			"globalVar = " + globalVar);
+	})(456);
+})(123);
+console.log('normal')
+function outerFunc2(outerArg) {
+	var outerVar = 'a';	
+	function innerFunc2(innerArg) {
+		var innerVar = 'b';
+		console.log(
+			"outerArg = " + outerArg + "\n" +
+			"innerArg = " + innerArg + "\n" +
+			"outerVar = " + outerVar + "\n" +
+			"innerVar = " + innerVar + "\n" +
+			"globalVar = " + globalVar);
+	};
+	innerFunc2(456);
+};
+outerFunc2(123)
+console.log('3 ways to do cloosure')
+console.log('closure by returning a function')
+function outerFunc3(outerArg) {
+	var outerVar = 'a';
+	function innerFunc3(innerArg) {
+		var innerVar = 'b';
+		console.log(
+			"outerArg = " + outerArg + "\n" +
+			"innerArg = " + innerArg + "\n" +
+			"outerVar = " + outerVar + "\n" +
+			"innerVar = " + innerVar + "\n" +
+			"globalVar = " + globalVar);
+	};
+	return innerFunc3;
+};
+var f = outerFunc3(123)
+f(456)
+console.log('closure by assigning  function to global var');
+//var r
+function outerFunc4(outerArg) {
+	var outerVar = 'a';
+	this.r =function innerFunc4(innerArg) {
+		var innerVar = 'b';
+		console.log(
+			"outerArg = " + outerArg + "\n" +
+			"innerArg = " + innerArg + "\n" +
+			"outerVar = " + outerVar + "\n" +
+			"innerVar = " + innerVar + "\n" +
+			"globalVar = " + globalVar);
+	};
+};
+var f = outerFunc4(123)
+r(456)
+console.log('incorporate in a long lived object')
+function outerFunc5(outerArg) {
+	var outerVar = 'a';
+	var innerArg = '456'
+	setTimeout(function(){
+		var innerVar = 'b';
+		outerArg = outerArg+'xx'
+		console.log(
+			"outerArg = " + outerArg + "\n" +
+			"innerArg = " + innerArg + "\n" +
+			"outerVar = " + outerVar + "\n" +
+			"innerVar = " + innerVar + "\n" +
+			"globalVar = " + globalVar);
+	}, 10)
+};
+outerFunc5(123)
+
+var arr1 = "john".split('');
+console.log(arr1)
+var arr2 = arr1.reverse();
+console.log(arr1)
+console.log('arr1.reverse changes arr1')
+console.log(arr2)
+var arr3 = "jones".split('');
+console.log(arr3)
+arr2.push(arr3);
+console.log(arr2[4])
+console.log(arr1)
+console.log("array 1: length=" + arr1.length + " last=" + arr1.slice(-1));
+console.log("array 2: length=" + arr2.length + " last=" + arr2.slice(-1));
+
+for (var i = 0; i < 5; i++) {
+	setTimeout(function(x) {
+	 	return function(){
+	 		console.log(x); 
+	 	};
+	 }(i), i * 1000 );
+}//1,2,3,4,5
+for (var i = 0; i < 5; i++) {
+	setTimeout(function() {
+	 	//console.log(i); 
+	 }, i * 1000 );
+}//all 5s
+//result interleaved 051525354555
+
+</script>
+</body>
+
+</html>

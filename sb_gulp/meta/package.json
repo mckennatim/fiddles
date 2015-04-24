@@ -1,0 +1,16 @@
+{
+  "name": "a",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "gulp-concat": "^2.5.2",
+    "map-stream": "0.0.5",
+    "through2": "^0.6.5"
+  }
+}

@@ -1,0 +1,62 @@
+/* Styles go here */
+body {
+	background-color: #60e071;
+}
+
+div {
+  margin:40px,80px,80px,80px;
+  padding:16px,16px,16px,16px;
+  color:blue;
+  background-color: #60e071;
+}
+pre {
+	background-color: #B0C4DE;
+	border: 1px solid #DDD;
+	font-size: 13px;
+	line-height: 19px;
+	overflow: auto;
+	padding: 6px 10px;
+	border-radius: 3px
+}
+code {
+    color:#000;
+}
+li {
+    list-style-type: disc;
+    list-style-position: inside;
+    padding: 0 12px;
+}
+ul{
+	margin-right: 40px;
+}
+
+.md {
+	color:green;
+	margin:30px;
+	padding:0px;
+	background-color: yellow;
+}
+
+a{
+	color: #27590e;
+	font-size: 1.4em;
+}
+.tag{
+	margin-left: 10px;
+	font-size: .75em;
+	color: #725c0b;
+}
+.tags{
+	position: absolute;
+	right:5px;
+	font-size: .8em;
+	color: #725c0b;
+}
+
+.desc{
+	font-family: "Comic Sans MS", cursive, sans-serif;
+}
+.sb-dd {
+	margin-left: 50px;
+	color: black;
+}  
