@@ -11,7 +11,7 @@ function meta() {
         jsdom.env(
             content, ["http://code.jquery.com/jquery.js"],
             function(errors, window) {
-                var title = window.$("title").text()
+                var title = window.$("title").text()||'notitle';
                 var desc = window.$('meta[name="description"]').attr("content");
                 var type = window.$('meta[property="og:type"]').attr("content");
                 var tags = window.$('meta[property="og:tags"]').attr("content")||'"undefined"';

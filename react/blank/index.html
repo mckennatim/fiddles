@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>prps states</title>
+	<link rel="stylesheet" href="">
+	<script src="https://fb.me/react-0.13.3.js"></script>
+    <script src="https://fb.me/JSXTransformer-0.13.3.js"></script>
+</head>
+<body>
+    <div id="example"></div>
+    <script type="text/jsx">
+    	var Dog = new React.createClass({
+    		dog: 'uli',
+    		render: function(){
+    			return (
+    				<div>
+    				hell {this.props.world}	{this.dog}
+    				</div>
+    			)
+    		}
+
+    	})
+    	React.render(<Dog world='frog'/>, document.getElementById('example'))
+
+    </script>	
+</body>
+</html>
