@@ -39,3 +39,7 @@ app.factory('md', ['$http', '$q', function($http, $q){
 		}
 	}
 }])
+
+var doWhat = function(){
+	console.log('did what')
+}

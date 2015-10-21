@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="ko">
+    <meta name="description" content="ko add to array - create a table with editable cells that updates a total and computes a json representation as a computed observable">
+    <meta property="og:type" content="website">
+    <meta property="og:tags" content='["ko", "ko.observableArray", "ko.utils.arrayForEach", "ko.mapping.fromJS", "ko.computed", "ko.editable-table"]'>
+	<title>ko-add new array</title>
+	<link rel="stylesheet" href="">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css"> 
+  <link rel="stylesheet" href="style.css"> 
+  <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.3/angular.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.12.0/ui-bootstrap-tpls.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/showdown/0.3.1/showdown.min.js"></script>
+  <script src="http://knockoutjs.com/downloads/knockout-3.0.0.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout.mapping/2.4.1/knockout.mapping.min.js"></script>  
+  <script src="app.js"></script>
+</head>
+<body ng-app="App">
+<sb-md  mdfile="README.md"></sb-md>
+<div id="ko">
+<table>
+    <thead>
+        <tr>
+            <th>Col  1 </th>
+            <th>Col  2 </th>
+            <th>Col  3 </th>
+            <th>Total </th>
+        </tr>
+    </thead>
+    <tbody data-bind='foreach:List'>
+        <tr>
+            <!-- ko foreach:Entries-->
+            <td>
+                <input size="3" type="text" data-bind="value:Hours, valueUpdate:'afterkeydown'"/>
+            </td>
+            <!-- /ko -->
+            <td>
+                <span data-bind="text:Total"></span> 
+            </td>
+        </tr>
+    </tbody>
+</table>  
+<button type="button" value="click" data-bind="click: addRow">addRow </button>
+<h4>ko.mapping.toJSON(self.List())</h4>
+<span data-bind="text: jsonList2"></span>
+<h4>ko.toJSON(List,null,2)</h4>
+<span data-bind="text: ko.toJSON(List, null, 2)"></span>
+</div>
+<script>
+var data = {
+    "Lines": [
+        {"Entries": [{"Hours": 5.5},{"Hours": 2.50},{"Hours": 3.75}]}, 
+        {"Entries": [{"Hours": 5.1},{"Hours": 2.00},{"Hours": 4.75}]},
+        {"Entries": [{"Hours": 1.2},{"Hours": 3.00},{"Hours": 2.12}]}
+    ]
+}
+
+var data1 = {"Entries": [{"Hours": 0},{"Hours": 0},{"Hours": 0}]};
+
+function model(data){
+    self=this;
+    self.Entries = ko.observableArray();
+    self.Total = ko.computed(function(){
+        var sum = 0
+        ko.utils.arrayForEach(self.Entries(), function(entry){
+            var value = parseFloat(entry.Hours(), 10);
+            if(!isNaN(value)) {sum += value};
+        })
+        console.log(sum)
+        return sum;
+    })
+    ko.mapping.fromJS(data, {}, self);
+}
+
+var mapping = {
+    create: function(options){
+        return new model(options.data);
+    }
+}
+
+function ViewModel() {
+    var self = this
+    self.List = ko.observableArray([])
+    self.LoadData = function (data) {                      
+        ko.mapping.fromJS(data.Lines, mapping, self.List)
+    }
+    self.LoadData(data);   
+    self.addRow =function(){
+        self.List.push(ko.mapping.fromJS(data1, mapping))
+    }
+    self.jsonList2=ko.computed(function(){
+        var newval = ko.mapping.toJSON(self.List())
+        return newval;
+    });
+}
+
+
+ko.applyBindings(new ViewModel(), document.getElementById('ko'))
+
+</script>
+<sb-md>
+#### code explanation
+	
+
+</sb-md>	
+</body>
+</html>

@@ -1,6 +1,7 @@
 /* mobile first design puts mobile first then media query is for all bigger than mobile */
 body {
   font: 600 14px/24px "Open Sans", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", Sans-Serif;
+  margin:10px;
 }
 /*.container:before,
 .container:after {
@@ -15,23 +16,41 @@ body {
   /*border: 10px;*/
   /**zoom: 1;*/
 }
-.container, .section, .aside {
-  border-radius: 6px;
+.container, .section, .aside, .sb-but {
+  border-radius: 10px;
 }
 .section, .aside {
   margin: 1.858736059%;
-  padding: 20px 0;
-  text-align: center;
 }
 .aside{
-  height: 120px;
+  /*height: 120px;*/
   background: #CCFFCC;
   color:black;
+  padding:10px;
 }
 .section{
   background: #2db34a;
   color: #fff;
+  padding: 20px;
+}
+.sb-but{
+  background: moccasin;
+  background-image: url("img/timer100.gif");
+    background-size: 80px 80px;
+    background-repeat: no-repeat;
+    /*padding:10px;*/
+  width:80px;
+  height:80px; 
+}
+.sb-but span{
+  color: blue;
+  position: relative;
+  left:30%;
+  top:34%;
 
+}
+br{
+  clear:both;
 }
 @media all and (min-width: 420px) {
   .container {
@@ -39,10 +58,10 @@ body {
   }
   .section {
     float: left;
-    width: 63.197026%;
+    width: 50%;
   }
   .aside {
     float: right;
-    width: 29.3680297%;
+    width: 25%;
   }
 }

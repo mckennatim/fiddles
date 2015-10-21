@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="ko">
+    <meta name="description" content="ko- dynamic array Why cant I use a simple values array as an observable in knockout?">
+    <meta property="og:type" content="junk">
+    <meta property="og:tags" content='["ko", "ko.observableArray", "ko.utils.arrayForEach", "ko.mapping.fromJS", "ko.computed"]'>
+	<title>ko-array updatable</title>
+	<link rel="stylesheet" href="">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css"> 
+  <link rel="stylesheet" href="style.css"> 
+  <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.3/angular.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.12.0/ui-bootstrap-tpls.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/showdown/0.3.1/showdown.min.js"></script>
+  <script src="http://knockoutjs.com/downloads/knockout-3.0.0.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout.mapping/2.4.1/knockout.mapping.min.js"></script>  
+  <script src="app.js"></script>
+</head>
+<body ng-app="App">
+<sb-md  mdfile="README.md"></sb-md>
+<div id="ko">
+<table>
+    <thead>
+        <tr>
+            <th>Mon  1 </th>
+            <th>Mon  2 </th>
+            <th>Mon  3 </th>
+            <th>Total </th>
+        </tr>
+    </thead>
+    <tbody data-bind='foreach:List'>
+        <tr>
+            <!-- ko foreach:Entries-->
+            <td>
+                <input size="3" type="text" data-bind="value:Hours, valueUpdate:'afterkeydown'"/>
+            </td>
+            <!-- /ko -->
+            <td>
+                <span data-bind="text:Total"></span> 
+            </td>
+        </tr>
+    </tbody>
+</table>  
+<button type="button" value="click" data-bind="click: show">show </button>
+<span data-bind="text: it"></span>
+</div>
+<div id="ko2">
+<table>
+    <thead>
+        <tr>
+            <th>Mon  1 </th>
+            <th>Mon  2 </th>
+            <th>Mon  3 </th>
+            <th>Total </th>
+        </tr>
+    </thead>
+    <tbody data-bind='foreach:List'>
+        <tr>
+            <!-- ko foreach:Entries-->
+            <td>
+                <input size="3" type="text" data-bind="value:$data, valueUpdate:'afterkeydown'"/>
+            </td>
+            <!-- /ko -->
+            <td>
+                <span data-bind="text:Total"></span> 
+            </td>
+        </tr>
+    </tbody>
+</table>  
+
+
+</div>
+<script>
+var data = {
+    "Lines": [
+        {"Entries": [{"Hours": 5.5},{"Hours": 2.50},{"Hours": 3.75}]}, 
+        {"Entries": [{"Hours": 5.1},{"Hours": 2.00},{"Hours": 4.75}]},
+        {"Entries": [{"Hours": 1.2},{"Hours": 3.00},{"Hours": 2.12}]}
+    ]
+}
+var data2 = {
+    "Lines": [
+        {"Entries": [5.5,2.50,3.75]}, 
+        {"Entries": [5.1,2.00,4.75]},
+        {"Entries": [1.2,3.00,2.12]}
+      ]
+}
+var data2 = {
+    "Lines": [
+        {"Entries": [5.5,2.50,3.75]}, 
+        {"Entries": [5.1,2.00,4.75]},
+        {"Entries": [1.2,3.00,2.12]}
+      ]
+}
+
+function ViewModel() {
+    var self = this
+
+    self.List = ko.observableArray([])
+    self.it=ko.observable(ko.toJSON(self.List()))
+    
+    self.LoadData = function (data) {                      
+        self.List(ko.mapping.fromJS(data.Lines)())
+    ////this makes every child observable
+    }
+    self.applyTotals = function(){
+        ko.utils.arrayForEach(self.List(), function(vm){
+            vm.Total = ko.computed(function(){
+                var s = 0;
+                console.log(this.Entries())
+                ko.utils.arrayForEach(this.Entries(), function(entry){
+                    // console.log(entry)
+                    var p = parseFloat(entry.Hours(), 10);
+                    if (!isNaN(p)) {
+                        s += p;
+                    }
+                });
+                return s;
+            }, vm);
+        });
+    }
+    self.LoadData(data);
+    console.log(ko.toJSON(self.List()));
+    self.applyTotals();
+    self.show = function(){
+        var nit = self.it();
+
+        console.log(ko.toJSON(self.List()));
+        nit =JSON.stringify(ko.toJS(self.List()));
+        self.it.valueHasMutated();
+        console.log(self.it())
+    }
+}
+
+function ViewModel2() {
+    var self = this
+    self.List = ko.observableArray([])
+    self.LoadData = function (d) {                      
+        self.List(ko.mapping.fromJS(d.Lines)())
+    ////this makes every child observable
+    }
+    self.applyTotals = function(){
+        ko.utils.arrayForEach(self.List(), function(vm){
+            vm.Total = ko.computed(function(){
+                var s = 0;
+                console.log(this.Entries())
+                ko.utils.arrayForEach(this.Entries(), function(entry){
+                    // console.log(entry)
+                    var p = parseFloat(entry, 10);
+                    if (!isNaN(p)) {
+                        s += p;
+                    }
+                });
+                return s;
+            }, vm);
+        });
+    }
+    self.LoadData(data2);
+    console.log(self.List());
+    self.applyTotals();
+}
+
+ko.applyBindings(new ViewModel(), document.getElementById('ko'))
+ko.applyBindings(new ViewModel2(), document.getElementById('ko2'))
+
+</script>
+<sb-md>
+#### code explanation
+	
+
+</sb-md>	
+</body>
+</html>

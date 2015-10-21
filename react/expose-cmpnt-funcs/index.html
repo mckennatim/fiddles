@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="React - Expose Component Functions">
+    <meta property="og:type" content="website">
+    <meta property="og:tags" content='["react", "bind", "refs", "this" ]'>
+	<title>jsx-expose cmpnt funcs</title>
+  <link rel="stylesheet" href="style.css"> 
+  <script src="https://fb.me/react-0.13.3.js"></script>
+  <script src="https://fb.me/JSXTransformer-0.13.3.js"></script>
+  <!-- <script src="//code.jquery.com/jquery-1.11.0.min.js"></script> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.3/angular.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/showdown/0.3.1/showdown.min.js"></script>
+  <script src="app.js"></script>
+</head>
+<body ng-app="App">
+<sb-md>
+#### exercise: Expose Component Functions
+#### tags: [react, ref, bind]
+</sb-md>  
+
+    <div id="example"></div>
+    <script type="text/jsx;harmony=true">
+        var Todo = React.createClass({
+          render: function() {
+            return <div onClick={this.props.onClick}>{this.props.title}</div>;
+          },
+          animate: function() {
+            console.log('Pretend %s is animating', this.props.title);
+          }
+        });
+
+        var Todos = React.createClass({
+          getInitialState: function() {
+            return {items: ['Apple', 'Banana', 'Cranberry']};
+          },
+          handleClick: function(index) {
+            var items = this.state.items.filter(function(item, i) {
+              return index !== i;
+            });
+            this.setState({items: items}, function() {
+              if (items.length === 1) {
+                this.refs.item0.animate();
+              }
+            });
+          },
+          render: function() {
+            return (
+              <div>
+                {this.state.items.map(function(item, i) {
+                  var boundClick = this.handleClick.bind(null,i);
+                  return (
+                    <Todo onClick={boundClick} key={i} title={item} ref={'item' + i} />
+                  );
+                },this)}
+              </div>
+            );
+          }
+        });
+
+      React.render(<Todos/>, document.getElementById('example'))
+    </script>
+<sb-md  mdfile="README.md"></sb-md>
+</body>
+</html>

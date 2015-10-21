@@ -8,15 +8,15 @@
     <meta property="og:tags" content='["float", "@media", "min_width", "css3"]'>
 	<title>css button</title>
 	<link rel="stylesheet" href="">
-  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css"> 
+  <!-- <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"> -->
+  <!-- <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">  -->
   <link rel="stylesheet" href="style.css"> 
   <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
   <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.0-rc.0/angular.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.13/angular-ui-router.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.12.0/ui-bootstrap-tpls.min.js"></script>
+  <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.12.0/ui-bootstrap-tpls.min.js"></script> -->
   <script src="http://cdnjs.cloudflare.com/ajax/libs/showdown/0.3.1/showdown.min.js"></script>
   <script src="app.js"></script>
 </head>
@@ -24,19 +24,39 @@
 <sb-md  mdfile="README.md"></sb-md>
 
 <div class="container">
-  <div class="section">Section</div>
-  <div class="aside">Aside</div>
+  <div class="section">
+    Section
+    <a onClick=doWhat()>
+      <div class="sb-but">
+        <span>dog</span> 
+      </div>
+    </a>
+  </div>
+  <div class="aside">
+    <div >
+    <a onClick=doWhat()>
+      <div class="sb-but">
+        <span>dog</span> 
+      </div>
+    </a>  
+    </div>
+  </div>
+  <br/>
+</div>
+    <a onClick=doWhat()>
+      <div class="sb-but">
+        <span>dog</span> 
+      </div>
+    </a>
+<div class="sep">
+  dog
+</div>
+<div>
+code explanation
+  
+not much to say  
 </div>
 
-<script>
 
-
-</script>
-<sb-md>
-#### code explanation
-	
-not much to say
-
-</sb-md>	
 </body>
 </html>

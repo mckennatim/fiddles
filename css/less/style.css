@@ -1,0 +1,64 @@
+/* mobile first design puts mobile first then media query is for all bigger than mobile */
+body {
+  font: 600 14px/24px "Open Sans", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", Sans-Serif;
+  margin:10px;
+}
+/*.container:before,
+.container:after {
+  content: "";
+  display: table;
+}
+.container:after {
+  clear: both;
+}*/
+.container {
+  background: yellow;
+  /*border: 10px;*/
+  /**zoom: 1;*/
+}
+.container, .section, .aside, .sb-but {
+  border-radius: 10px;
+}
+.section, .aside {
+  margin: 1.858736059%;
+}
+.aside{
+  /*height: 120px;*/
+  background: #CCFFCC;
+  color:black;
+  padding:10px;
+}
+.section{
+  background: #2db34a;
+  color: #fff;
+  padding: 20px;
+}
+.sb-but{
+  background: white;
+  background-image: url("img/timer100.gif");
+    background-size: 80px 80px;
+    background-repeat: no-repeat;
+    /*padding:10px;*/
+  width:80px;
+  height:80px; 
+}
+.sb-but span{
+  color: blue;
+  position: relative;
+  left:30%;
+  top:34%;
+
+}
+@media all and (min-width: 420px) {
+  .container {
+    max-width: 538px;
+  }
+  .section {
+    float: left;
+    width: 63.197026%;
+  }
+  .aside {
+    float: right;
+    width: 29.3680297%;
+  }
+}

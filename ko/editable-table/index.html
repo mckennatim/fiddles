@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>ko challenge</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="description" content="ko dynamic array - create a table with editable cells that updates a total and computes a json representation as a computed observable">
+	<meta property="og:type" content="website">
+    <meta property="og:tags" content='["ko", "ko.observableArray", "ko.utils.arrayForEach", "ko.mapping.fromJS", "ko.computed", "ko.editable-table"]'>
+	<title>ko-editable-table</title>
+	<link rel="stylesheet" href="">
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+	<link rel="stylesheet" href="style.css"> 
+	<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.3/angular.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.12.0/ui-bootstrap-tpls.min.js"></script>
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/showdown/0.3.1/showdown.min.js"></script>
+
+	<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+	<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+	<script src="http://knockoutjs.com/downloads/knockout-3.0.0.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout.mapping/2.4.1/knockout.mapping.min.js"></script>
+	<script src="app.js"></script>
+</head>
+<body ng-app="App">
+	<sb-md  mdfile="README.md"></sb-md>
+	<div id="ko">
+
+
+		<table>
+			<caption>table title and/or explanatory text</caption>
+			<thead>
+				<tr>
+					<th>YEAR</th>
+					<!-- ko foreach:headings-->
+					<th><span data-bind="text:$data"></span></th>
+					<!-- /ko -->
+					<th>Total</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody data-bind="foreach: Years">
+				<tr>
+					<td>
+						<input size="3" type="text" data-bind="value:Year"> 
+					</td>
+					<!-- ko foreach:Values-->
+					<td> 
+						<input size="3" type="text" data-bind="value: m, valueUpdate:'afterkeydown'" >
+					</td>
+					<!-- /ko -->
+					<td style="background:white; border:solid 1px;">
+					<span  data-bind="text:Total"></span> 
+					</td>
+					<td> 
+						<button type="button" value="remove" data-bind="click: $parent.delete">X</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<button type="button" value="click" data-bind="click: addYear">addYear </button>
+		<button type="button" value="click" data-bind="click: send2server">send2server </button>
+		<!-- <div style="color:green" data-bind="text: astr"></div> -->
+
+		<h4>Returned Edited Data</h4>
+		<div data-bind="text: returnedEditedData"></div>
+
+		<h4>Server Data</h4>
+		<div data-bind="foreach: serverData">
+			<div data-bind="text: ko.toJSON($data)"></div>
+		</div>	
+
+	</div>
+	<!-- TODO: fill in with UI -->
+
+	<!-- TODO: fill in with save data, to display what will be sent back -->
+	<script src="koapp.js"></script>
+</body>
+</html>

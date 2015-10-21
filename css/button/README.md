@@ -1,5 +1,5 @@
 ### exercise: mobile first responsive css, 
-#### tags: [document.getElement, float, @media, min_width, css3]
+#### tags: [float, @media, min_width, css3]
 <a href="/fiddles/index.html">[back to fiddles]</a>
 
 The html code:

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="react es6 count">
+    <meta property="og:type" content="website">
+    <meta property="og:tags" content='["es6", "react", "constructor", "propTypes", "defaultProps"]'>
+	<title>jsx es6 count</title>
+	<link rel="stylesheet" href="">
+	<script src="https://fb.me/react-0.13.3.js"></script>
+    <script src="https://fb.me/JSXTransformer-0.13.3.js"></script>
+</head>
+<body>
+    <div id="example"></div>
+    <script type="text/jsx">
+        "use strict";
+        class Counter extends React.Component {
+          constructor(props) {
+            super(props);
+            this.state = {count: props.initialCount};
+          }
+          tick() {
+            this.setState({count: this.state.count + 1});
+          }
+          render() {
+            return (
+              <div onClick={this.tick.bind(this)}>
+                Clicks: {this.state.count}
+              </div>
+            );
+          }
+        }
+        Counter.propTypes = { initialCount: React.PropTypes.number };
+        Counter.defaultProps = { initialCount: 0 };
+
+        React.render(<Counter initialCount={12} />, document.getElementById('example'));
+
+    </script>	
+</body>
+</html>

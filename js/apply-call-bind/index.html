@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="advanced javascript - apply call bind and currying functions">
+    <meta property="og:type" content="website">
+    <meta property="og:tags" content='["apply", "call", "bind", "currying", "reduce" ]'>
+	<title>js-apply-call-bind</title>
+	<link rel="stylesheet" href="">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css"> 
+  <link rel="stylesheet" href="style.css"> 
+  <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.0-rc.0/angular.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.13/angular-ui-router.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.12.0/ui-bootstrap-tpls.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/showdown/0.3.1/showdown.min.js"></script>
+  <script src="app.js"></script>
+</head>
+<body ng-app="App">
+<sb-md  mdfile="README.md"></sb-md>
+<div>
+	<input  id="inp"><br>
+	<button type="button" >clickme</button>
+</div>
+<script>
+	var user= {
+	    data: [
+	        {name:"T. Woods", age:37},
+	        {name:"P. Mickelson", age:43}
+	    ],		
+		handleClick: function(){
+			var randomNum = ((Math.random () * 2 | 0) + 1) - 1;
+			$('#inp').val(this.data[randomNum].name)
+		}
+	}
+	$('button').click(user.handleClick.bind(user))
+
+    var avgScore = "global avgScore";
+    function avg (arrayOfScores) { //functions like this are global, this is window
+        var sumOfScores = arrayOfScores.reduce (function (prev, cur, index, array) {
+            return prev + cur;
+        });
+        this.avgScore = sumOfScores / arrayOfScores.length;
+    }
+    var gameController = {
+        scores  :[20, 34, 55, 46, 77],
+        avgScore: null,
+        players :[
+            {name:"Tommy", playerID:987, age:23},
+            {name:"Pau", playerID:87, age:33}
+        ]
+    }
+    avg (gameController.scores);
+    console.log (window.avgScore); // 46.4​
+    console.log (gameController.avgScore); // null​
+
+    avgScore = "global avgScore";
+    avg.call (gameController, gameController.scores);
+    console.log (window.avgScore); //global avgScore​
+    console.log (gameController.avgScore); // 46.4​
+
+    function currier(fn){
+        var args = Array.prototype.slice.call(arguments,1)
+        return function(){
+            return fn.apply(this, args.concat(
+                Array.prototype.slice.call(arguments,0)))
+        }
+    } 
+
+    var sequence= function(start, end){
+        var result =[];
+        for (var i = start; i<=end;i++){
+            result.push(i)
+        }
+        return result
+    }
+    var seq5 = currier(sequence,1)
+    console.log(seq5(5))
+
+</script>
+<sb-md mdfile="README2.md"></sb-md>	
+<script>
+    function greet (gender, age, name) {
+        var salutation = gender === "male" ? "Mr. " : "Ms. ";
+        if (age > 25) {
+            return "Hello, " + salutation + name + ".";
+        }
+        else {
+            return "Hey, " + name + ".";
+        }
+    } 
+    var greetAnAdultMale = greet.bind (null, "male", 45);
+    console.log(greetAnAdultMale ("John Hartlove")); // "Hello, Mr. John Hartlove."​
+    var greetAYoungster = greet.bind (null, "", 16);
+    console.log(greetAYoungster ("Alex")); // "Hey, Alex."​
+    console.log( greetAYoungster ("Emma Waterloo")); // "Hey, Emma Waterloo."​     
+</script>
+<sb-md mdfile="README3.md"></sb-md>	
+<script>
+    var appController = {
+        scores  :[900, 845, 809, 950],
+        avgScore:null,
+        avg     :function () {
+          var sumOfScores = this.scores.reduce (function (prev, cur, index, array) {
+              return prev + cur;
+          });
+          this.avgScore = sumOfScores / this.scores.length;
+        }
+    }
+    appController.avg.call (gameController);
+    console.log (gameController.avgScore); // 46.4​
+    console.log (appController.avgScore); // null​
+
+    var students = ["Peter Alexander", "Michael Woodruff", "Judy Archer", "Malcolm Khan"];
+    function welcomeStudents () {
+        var args = Array.prototype.slice.call (arguments);
+        var lastItem = args.pop ();
+        console.log ("Welcome " + args.join (", ") + ", and " + lastItem + ".");
+    }
+    welcomeStudents.apply (null, students);
+    // Welcome Peter Alexander, Michael Woodruff, Judy Archer, and Malcolm Khan.    
+
+</script>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="async ajax-callback, promises">
+    <meta property="og:type" content="website">
+    <meta property="og:tags" content='["promises", "ajax", "callback", "es6", "then", "onclick", "getElementById" ]'>
+	<title>async</title>
+	<link rel="stylesheet" href="">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css"> 
+  <link rel="stylesheet" href="style.css"> 
+  <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.3/angular.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.12.0/ui-bootstrap-tpls.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/showdown/0.3.1/showdown.min.js"></script>
+  <script src="app.js"></script>
+</head>
+<body ng-app="App">
+<sb-md  mdfile="README.md"></sb-md>
+<div>
+Hello world
+<button onclick="clickFunc()" id="but" type="text">button</button>
+</div>
+
+<script>
+var b = document.getElementById('but')
+var respo = {message:'nothing yet'};
+var data ={}
+console.log(respo.message)
+console.log(data)
+
+function clickFunc()
+  {console.log('clicked it')
+  clickService(myCallback)
+}
+
+function clickService(callback){
+  var username='tim';
+  var email='mckenna.tim@gmail.com';
+  $.ajax({
+    url: 'http://sitebuilt.net:3002/api/ismatch/?name='+username+'&email='+email,
+    success: function(data, status, response){
+      callback(response);
+    },
+    error: function (response){
+      callback(response);
+    }
+    .bind(this)
+  })
+}
+
+function myCallback(response){
+  var msg
+  if(response.status==0){
+    msg = 'server '+response.statusText;
+
+  }else {
+    msg = 'got response'
+    data = response.responsJSON
+  }
+  response.message =msg
+  respo = response;
+  console.log(respo.message)
+  console.log(response.responseJSON)
+}
+
+
+</script>
+<sb-md>
+#### code explanation
+Ajax has an object for a parameter. Besides the url key/value there is a success function and an error function. 
+
+    $.ajax({
+      url: 'http://sitebuilt.net:3002/api/ismatch/?name='+username+'&email='+email,
+      success: function(data, status, response){
+        callback(response);
+      },
+      error: function (response){
+        callback(response);
+      }
+      .bind(this)
+
+On error the most information is in the first parameter (the third param has nothing)
+
+    Object {readyState: 0, responseText: "", status: 0, statusText: "error"}
+
+On success the most information is in the third parameter `success: function(data, status, response)`. 
+    
+    Object {readyState: 4, responseText: "{"message":"match","result":0,"err":null}", responseJSON: Object, status: 200, statusText: "OK"}
+
+of which the `responseJSON` object is the data (also returned by the first parameter)    
+
+    Object {message: "match", result: 0, err: null}
+
+So then the callback can check for error like `server error`, add a message depending on the response and update data if data came in the resposne
+
+    function myCallback(response){
+      var msg
+      if(response.status==0){
+        msg = 'server '+response.statusText;
+
+      }else {
+        msg = 'got response'
+        data = response.responsJSON
+      }
+      response.message =msg
+      respo = response;
+      console.log(respo.message)
+      console.log(response.responseJSON)
+    }
+     
+</sb-md>	
+</body>
+</html>

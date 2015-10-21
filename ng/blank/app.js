@@ -10,7 +10,7 @@ app.directive('sbMd', function (md) {
 		link: function (scope, element, attrs) {
 			var mdText = element.text();
 			if(scope.mdfile){
-				console.log(scope.mdfile)
+				//console.log(scope.mdfile)
 				md.getMd(scope.mdfile).then(function(txt){
 					mdText = txt + mdText;
 					convertMd(mdText)

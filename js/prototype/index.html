@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="advanced javascript - prototype">
+    <meta property="og:type" content="website">
+    <meta property="og:tags" content='["prototype", "borrowing methods", "apply"]'>
+	<title>js-prototype</title>
+	<link rel="stylesheet" href="">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css"> 
+  <link rel="stylesheet" href="style.css"> 
+  <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.0-rc.0/angular.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.13/angular-ui-router.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.12.0/ui-bootstrap-tpls.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/showdown/0.3.1/showdown.min.js"></script>
+  <script src="app.js"></script>
+</head>
+<body ng-app="App">
+<sb-md  mdfile="README.md"></sb-md>
+<div>
+	<input  id="inp"><br>
+	<button type="button" >clickme</button>
+</div>
+<script>
+	function PrintStuff (myDocuments) {
+		this.documents = myDocuments;
+	}
+	PrintStuff.prototype.print = function () {
+		console.log(this.documents);
+	}
+	var newObj = new PrintStuff ("I am a new Object and I can print.");
+	newObj.print (); //I am a new Object and I can print.
+</script>
+</body>
+</html>

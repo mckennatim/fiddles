@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="React - Communicating between components">
+    <meta property="og:type" content="website">
+    <meta property="og:tags" content='["react", "bind", "refs", "this" ]'>
+	<title>jsx-comm betw cmpnt</title>
+  <link rel="stylesheet" href="style.css"> 
+  <script src="https://fb.me/react-0.13.3.js"></script>
+  <script src="https://fb.me/JSXTransformer-0.13.3.js"></script>
+  <!-- <script src="//code.jquery.com/jquery-1.11.0.min.js"></script> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.3/angular.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/showdown/0.3.1/showdown.min.js"></script>
+  <script src="app.js"></script>
+</head>
+<body ng-app="App">
+<sb-md>
+#### exercise: Communicating between components
+#### tags: ["react", "bind", "refs", "this" ]
+</sb-md>  
+
+    <div id="example"></div>
+    <script type="text/jsx;harmony=true">
+      var GroceryList = React.createClass({
+        handleClick: function(i) {
+          console.log('You clicked: ' + this.props.items[i]);
+        },
+        render: function() {
+          return (
+            <div>
+              {this.props.items.map(function(item, i) {
+                return (
+                  <div onClick={this.handleClick.bind(null, i)} key={i}>{item}</div>
+                );
+              }, this)}
+            </div>
+          );
+        }
+      });
+
+      React.render(<GroceryList items={['Apple', 'Banana', 'Cranberry']} />, document.getElementById('example'))
+    </script>
+<sb-md  mdfile="README.md"></sb-md>
+</body>
+</html>

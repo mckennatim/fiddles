@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="ko">
+    <meta name="description" content="ko dynamic array - create a table with editable cells that updates a total and computes a json representation as a computed observable">
+    <meta property="og:type" content="website">
+    <meta property="og:tags" content='["ko", "ko.observableArray", "ko.utils.arrayForEach", "ko.mapping.fromJS", "ko.computed", "ko.editable-table"]'>
+	<title>ko-array updatable</title>
+	<link rel="stylesheet" href="">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css"> 
+  <link rel="stylesheet" href="style.css"> 
+  <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.3/angular.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.12.0/ui-bootstrap-tpls.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/showdown/0.3.1/showdown.min.js"></script>
+  <script src="http://knockoutjs.com/downloads/knockout-3.0.0.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout.mapping/2.4.1/knockout.mapping.min.js"></script>  
+  <script src="app.js"></script>
+</head>
+<body ng-app="App">
+<sb-md  mdfile="README.md"></sb-md>
+<div id="ko">
+<table>
+    <thead>
+        <tr>
+            <th>Mon  1 </th>
+            <th>Mon  2 </th>
+            <th>Mon  3 </th>
+            <th>Total </th>
+        </tr>
+    </thead>
+    <tbody data-bind='foreach:List'>
+        <tr>
+            <!-- ko foreach:Entries-->
+            <td>
+                <input size="3" type="text" data-bind="value:Hours, valueUpdate:'afterkeydown'"/>
+            </td>
+            <!-- /ko -->
+            <td>
+                <span data-bind="text:Total"></span> 
+            </td>
+        </tr>
+    </tbody>
+</table>  
+<button type="button" value="click" data-bind="click: show">show </button>
+<h4>updated by click</h4>
+<span data-bind="text: jsonList"></span>
+<h4>updated by computed observable</h4>
+<span style="color:green" data-bind="text:jsonList2"></span>
+</div>
+  
+
+
+</div>
+<script>
+var data = {
+    "Lines": [
+        {"Entries": [{"Hours": 5.5},{"Hours": 2.50},{"Hours": 3.75}]}, 
+        {"Entries": [{"Hours": 5.1},{"Hours": 2.00},{"Hours": 4.75}]},
+        {"Entries": [{"Hours": 1.2},{"Hours": 3.00},{"Hours": 2.12}]}
+    ]
+}
+
+function ViewModel() {
+    var self = this
+
+    self.List = ko.observableArray([])
+    self.LoadData = function (data) {                      
+        self.List(ko.mapping.fromJS(data.Lines)())
+    }
+    self.applyTotals = function(){
+        ko.utils.arrayForEach(self.List(), function(vm){
+            vm.Total = ko.computed(function(){
+                var s = 0;
+                ko.utils.arrayForEach(this.Entries(), function(entry){
+                    var p = parseFloat(entry.Hours(), 10);
+                    if (!isNaN(p)) {
+                        s += p;
+                    }
+                });
+                return s;
+            }, vm);
+        });
+    }
+    self.LoadData(data);   
+    self.applyTotals();
+    self.jsonList=ko.observable('my dog is uli')
+    self.show = function(){//the button click function
+        self.jsonList(ko.toJSON(self.List()));
+    };
+
+    self.jsonList2=ko.computed(function(){
+        var newval = ko.toJSON(self.List())
+        return newval;
+    });
+}
+
+
+ko.applyBindings(new ViewModel(), document.getElementById('ko'))
+
+</script>
+<sb-md>
+#### code explanation
+	
+
+</sb-md>	
+</body>
+</html>
