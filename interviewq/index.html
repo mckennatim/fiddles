@@ -65,12 +65,12 @@ function findLastDup(a,v){
   while (true){
     if (v==a[m]){
       consol.log(m)
-      consol.log('found at m')
+      consol.log('Index(s) found at m')
       return theIdxs(m)
     }else if(v==a[m+1]){
       consol.log(m)
-      consol.log('You have to stop at 2 items and check the second otherwise it will keep going back to the same place')
-      consol.log('found at m+1')
+      consol.log('You have to stop at 2 items and check the second otherwise it will keep going back to the same place.')
+      consol.log('Index(s) found at m+1')
       return theIdxs(m+1)
     }else if (v>=a[m]){
       l=m;
@@ -94,7 +94,7 @@ function dorev(){
   var arr = str.slice(1,-1).split(',').map(function(e){return parseInt(e)})
   var sarr = arr.sort(function(a,b){return a-b})
   consol.log(sarr)
-  consol.log("The left, right and middle indexes each iteration")
+  consol.log("The left, right and middle indexes each iteration are...")
   var last = findLastDup(sarr,val)
   consol.log('the last occurrance of <b>'+ sarr[last] + '</b> is index<b> '+last+'</b')
 }
