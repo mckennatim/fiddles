@@ -1,4 +1,4 @@
-var app = angular.module("App", ['Exercise']);
+var app = angular.module("App", []);
 
 app.directive('sbMd', function (md) {
 	var converter = new Showdown.converter();
@@ -10,7 +10,6 @@ app.directive('sbMd', function (md) {
 		link: function (scope, element, attrs) {
 			var mdText = element.text();
 			if(scope.mdfile){
-				//console.log(scope.mdfile)
 				md.getMd(scope.mdfile).then(function(txt){
 					mdText = txt + mdText;
 					convertMd(mdText)

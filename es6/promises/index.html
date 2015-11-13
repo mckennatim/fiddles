@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="async via promises - compared to ajax callback">
+    <meta property="og:type" content="website">
+    <meta property="og:tags" content='["promises", "ajax", "callback",  "onclick", "getElementById" ]'>
+	<title>async - promises</title>
+	<link rel="stylesheet" href="">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css"> 
+  <link rel="stylesheet" href="style.css"> 
+  <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.3/angular.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.12.0/ui-bootstrap-tpls.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/showdown/0.3.1/showdown.min.js"></script>
+  <script src="app.js"></script>
+</head>
+<body ng-app="App">
+<sb-md  mdfile="README.md"></sb-md>
+<div>
+<input id="name" size="3" type="text" value="tim"></input>
+<input id="email" type="email" value="mckenna.tim@gmail.com"></input>
+<input id="url" type="text" value="http://sitebuilt.net:3002"></input><br>
+<button class="btn btn-success" onclick="vm.cbClick()" id="but1" type="button">callback</button><br>
+<button class="btn btn-primary" onclick="vm.prClick()" id="but2" type="button">promise</button><br>
+
+<span id="resp"></span>
+</div>
+
+<script>
+var vm= (function(){
+  var butD = document.getElementById('but1');
+  var respD = document.getElementById('resp');
+  var nameD = document.getElementById('name');
+  var emailD = document.getElementById('email');
+  var urlD = document.getElementById('url');
+  var resp = {message:'nothing yet'};
+  var dispResp = function(){respD.innerHTML=resp.message};
+  var getUrl = function(){return urlD.value}
+  var getEmail = function(){return emailD.value}
+  var getName = function(){return nameD.value}
+  dispResp();
+  return{
+    svals: '',
+    resp: resp,
+    getUrl: getUrl,
+    getName: getName,
+    getEmail: getEmail,
+    dispResp: dispResp,
+    setResp:function(msg){
+      this.resp.message=msg;
+      this.dispResp();
+    },
+    setSvals: function(){
+      this.svals= {url:this.getUrl(), name:this.getName(), email:this.getEmail()}
+    },
+    cbClick: function(){
+      this.setSvals()
+      this.setResp('working')
+      Auth.cbService(this.svals, function(respo,response){
+        vm.setResp(respo);
+      })
+    },
+    prClick: function(){
+      this.setSvals();
+      this.setResp('promise working');
+      Auth.promise(this.svals).then(function(respo,response){
+        vm.setResp(respo)
+      }).catch(function(respo,response){
+        vm.setResp(respo)
+      })
+    }
+  }
+})();
+
+var Auth = (function(){
+  return{
+    cbService: function(sv, callback){
+      $.ajax({
+        url: sv.url+'/api/ismatch/?name='+sv.name+'&email='+sv.email,
+        success: function(data, status, response){
+          var respo = "SUCCESS - data: "+JSON.stringify(data)+" status: "+JSON.stringify(status)+" response: "+JSON.stringify(response);  
+          callback(respo, response);
+        },
+        error: function (response){
+          var respo = "ERROR - status: "+JSON.stringify(status)+" response: "+JSON.stringify(response);  
+          callback(respo, response);
+        }
+        .bind(this)
+      })
+    },
+    promise: function(sv){
+      return new Promise(function (resolve, reject){
+        $.ajax({
+          url: sv.url+'/api/ismatch/?name='+sv.name+'&email='+sv.email,
+          success: function(data, status, response){
+            var respo = "SUCCESS - data: "+JSON.stringify(data)+" status: "+JSON.stringify(status)+" response: "+JSON.stringify(response);  
+            resolve(respo, response);
+          },
+          error: function (response){
+            var respo = "ERROR - status: "+JSON.stringify(status)+" response: "+JSON.stringify(response);  
+            reject(respo, response);
+          }
+          .bind(this)
+        })
+      })
+    }
+  }
+})();
+
+</script>
+</body>
+</html>

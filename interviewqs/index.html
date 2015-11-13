@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="find dupes in array">
+    <meta property="og:type" content="website">
+    <meta property="og:tags" content='["arrays", "hasOwnProperty", "hash table", "associative array", "palindrome"]'>
+	<title>interview</title>
+	<link rel="stylesheet" href="">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css"> 
+  <link rel="stylesheet" href="style.css"> 
+  <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.3/angular.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.12.0/ui-bootstrap-tpls.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/showdown/0.3.1/showdown.min.js"></script>
+  <script src="app.js"></script>
+</head>
+<body ng-app="App">
+<sb-md  mdfile="README.md"></sb-md>
+<div>
+<h4>find dupes</h4>
+<input type="text" id="inp" value="[6,3,7,8,3,4,6,7]" onChange="dorev()"></input><br>
+<input type="text" id="inp2" value="8" onChange="dorev()"></input><br>
+<span id="out"></span>
+</div>
+
+<script>
+var consol = {}
+consol.log = function(x){
+  $("#out").html($("#out").html()+x+"<br>")
+}
+
+
+function filterDupes(a){
+  uniqueArray = a.filter(function(item, pos, self) {
+      return self.indexOf(item) == pos;
+  })  
+  return uniqueArray;
+}
+
+
+function hashDupes(arr){
+  var du = {}
+  for (var i=0; i< arr.length;i++){
+    if (du.hasOwnProperty(arr[i])){
+      consol.log("dupe for "+ arr[i]+" at idx "+i)
+      du[arr[i]]=true;
+    }else{
+      du[arr[i]]=false;
+    }
+  }
+  consol.log(JSON.stringify(du))
+  consol.log(Object.keys(du))
+}
+
+function filterHashDupes(arr){
+  du={}
+  var unarr= arr.filter(function(item){
+    if(du.hasOwnProperty(item)){
+      du[item]=true
+      return false;
+    }else{
+      du[item]=false;
+      return true;
+    }
+  })
+  return unarr;
+}
+
+function fibonacci(max){
+  var iarr = [], iout = [];
+  for(var i=0;i<max;i++){iarr.push(i);};
+  var it= iarr.reduce(function(p,c,i,a){
+    return c.push(p+c)
+  })
+  return iout;
+}
+
+function fibo(n) {
+  return Array.apply(0, Array(n)).
+    reduce(function(x, y, z){ return x.concat((z < 2) ? z : x[z-1] + x[z-2]); }, []);
+}
+
+function fibob(n){
+  var f =[0,1]
+  for (var i=2;i<n;i++){
+    f[i] = f[i-1]+f[i-2]
+  }
+  return f
+}
+
+console.log(fibo(10))
+console.log( Array(10))
+console.log(Array.apply(0, Array(10)));
+/*-------------------------------------*/
+function isPalindrome(inn){
+  var mid = Math.floor(inn.length/2), i, j=inn.length-1;
+  for (i=0; i<mid; i++){
+    console.log(inn[i]+inn[j]);
+    if(inn[i]!=inn[j]){
+      return false
+    }
+    j--;
+  }
+  return true
+}
+console.log(isPalindrome('erofgorf'))
+
+function findLastDup(a,v){
+  
+  var l=0, r=a.length-1, m=Math.floor((r+l)/2)
+    console.log(' '+l+'  '+m+'  '+r)
+
+  function theIdxs(m){
+    var to = m
+    var ret =[]
+    ret[0]=m
+    ti=to
+    //check both ways for more of the same
+    while (ti-1<=0 && a[ti]==a[ti-1]){
+      ti--
+      ret.push(ti)
+    }
+    ti=to
+    while (ti+1<a.length-1 && a[ti]==a[ti+1]){
+      ti++
+      ret.push(ti)
+    }
+    console.log(ret)
+  } 
+   
+  while (true){
+    if (v==a[m]){
+      console.log('hooray')
+      console.log(m)
+      theIdxs(m)
+      return;
+    }else if(v==a[m+1]){
+      console.log('hooray2')
+      console.log(m+1)
+      theIdxs(m+1)
+      return;
+    }else if (v>=a[m]){
+      l=m;
+    }else {
+      r=m;
+    }
+    m=Math.floor((r+l)/2)
+    console.log(' '+l+'  '+m+'  '+r)
+    if (r-l <2){
+      console.log('not there')
+      return 
+    }    
+    
+  }
+}
+function findLastDup2(a,v){
+  var l=0, r=a.length-1, m=Math.floor((r+l)/2)
+    console.log(' '+l+'  '+m+'  '+r)
+  while (true){
+    if (v==a[m]){
+      console.log('hooray')
+      console.log(m)
+      return;
+    }else if(v==a[m+1]){
+      console.log('hooray2')
+      console.log(m+1)
+      return;
+    }else if (v>=a[m]){
+      l=m;
+    }else {
+      r=m;
+    }
+    m=Math.floor((r+l)/2)
+    console.log(' '+l+'  '+m+'  '+r)
+    if (r-l <2){
+      console.log('not there')
+      return 
+    }    
+    
+  }
+}
+function dorev(){
+  $("#out").html('')
+  var str =$("#inp").val()
+  var val = parseInt($("#inp2").val())
+  var arr = str.slice(1,-1).split(',').map(function(e){return parseInt(e)})
+  var sarr = arr.sort(function(a,b){return a-b})
+  console.log(sarr)
+  findLastDup(sarr,val)
+  consol.log("filter indexOf method")
+  consol.log(filterDupes(arr))
+  consol.log("filter hash method")
+  consol.log(filterHashDupes(arr))
+  consol.log("hashtable approach -sorts as well")
+  consol.log(hashDupes(arr))
+  consol.log("fibonacci array")
+  consol.log(fibob(10))
+}
+dorev($("#inp").val())
+
+</script>
+<sb-md>
+### methods compared
+#### filter indexOf
+indexOf is O(n) indexOf in a loop is O(n^2)
+
+    uniqueArray = a.filter(function(item, pos, self) {
+        return self.indexOf(item) == pos;
+    })
+
+#### hashtable
+an assoociative array is a hashtable. linear time for checking via .hasOwnProperty()
+#### find how many dupes and where they are
+instead of 
+
+    var du = {}
+    for (var i=0; i< arr.length;i++){
+      if (du.hasOwnProperty(arr[i])){
+        consol.log("dupe for "+ arr[i]+" at idx "+i)
+        du[arr[i]]=true;
+      }else{
+        du[arr[i]]=false;
+      }
+    }
+
+you could store the indexes of each array item in the `:value`  
+
+        du[arr[i]]=du[arr[i]].push(i);
+      }else{
+        var iarr =[]
+        iarr.push(i)
+        du[arr[i]]=iarr;
+      } 
+
+#### fibonacci
+*<a href="http://ariya.ofilabs.com/2013/07/prime-numbers-factorial-and-fibonacci-series-with-javascript-array.html">fibonacci with reduce</a>
+*<a href="https://www.safaribooksonline.com/library/view/javascript-the-good/9780596517748/ch04s15.html">fibonacci memoization</a>
+   
+
+</sb-md>	
+</body>
+</html>

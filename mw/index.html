@@ -24,43 +24,35 @@
 <body ng-app="App">
 <sb-md  mdfile="README.md"></sb-md>
 <div>
-<h4>hello</h4>
-<input type="text" id="inp" value="paws" onChange="dorev()"></input><br>
-<span id="out"></span>
+<div id="buttonDiv"></div>
+<span id="log"></span>
 </div>
+
 <script>
-var consol = {
+var consol={
   log: function(x){
-    $("#out").html($("#out").html()+x+"<br>")
+    $("#log").html($("#log").html()+ x+"<br>")
   }
 }
-function dorev(){
-  $("#out").html('')
-  consol.log($("#inp").val())
+consol.log('my dog is Ulysses')
+
+var buttonDiv =$("#buttonDiv")
+var buttons = []
+function autoButton(){
+  for (var i = 0; i<5; i++){
+    buttons.push('<button type="button" id="but'+i+'">button '+ i+' </button>')
+  }
+  buttonDiv.append(buttons)
+  for (var i = 0; i<5; i++){
+    var b = $("#but"+i)
+    b.click((function(x){
+      return function(){
+        consol.log('button '+x )
+      }
+    }(i)))
+  }  
 }
-dorev($("#inp").val())
-
-class LinkedList {
-  constructor() {
-    this.start=null;
-    this.end=this.start;
-  }
-  makeNode() {
-    return {data:null, next:null}
-  }
-  addNode() {
-    if (this.start===null){
-      this.start = this.makeNode();
-      this.end = this.start;
-    }else {
-      this.end.next = this.makeNode()
-      this.end=this.end.next
-    }
-  }
-} 
-
-var animals = new LinkedList()
-animals.addNode('rusty')
+autoButton()
 
 </script>
 <sb-md>

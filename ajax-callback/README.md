@@ -1,6 +1,7 @@
-### exercise: ajax callback, 
-#### tags: ["promises", "ajax", "callback", "es6", "then", "onclick", "getElementById" ]
+### exercise: async via callback - On using a service to handle ajax and respond with a callback
+#### tags: ["ajax", "callback",  "onclick", "getElementById" ]
 <a href="/fiddles/index.html">[back to fiddles]</a>
+<a href="http://www.sitepoint.com/javascript-goes-asynchronous-awesome/?utm_medium=email&utm_campaign=SitePoint+Newsletter++22+October+2015&utm_content=SitePoint+Newsletter++22+October+2015+Version+A+CID_86674d87ee647f22ed59ff7afb4291db&utm_source=CampaignMonitor%20SitePoint&utm_term=Read%20more">promises</a>
 
     <div>
     Hello world

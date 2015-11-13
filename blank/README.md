@@ -1,9 +1,3 @@
-### exercise: blank, 
-#### tags: [document.getElement, apply, slice]
+### exercise: data structures, 
+#### tags: ["linked lists", "classes"]
 <a href="/fiddles/index.html">[back to fiddles]</a>
-
-The html code:
-
-	<div>
-        Hello world
-	</div>

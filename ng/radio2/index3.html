@@ -3,10 +3,10 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="description" content="blank, two way data binding in controller and directive">
+    <meta name="description" content="isolate scope &, reference function in parent">
     <meta property="og:type" content="website">
-    <meta property="og:tags" content='["two way", "databinding", "two way databinding", "directive", "controller", "angular"]'>
-	<title>ng-blank</title>
+    <meta property="og:tags" content='["&", "reference", "parent", "directive", "controller", "angular", "link"]'>
+	<title>ng-&</title>
 	<link rel="stylesheet" href="">
   <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
   <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css"> 
@@ -14,6 +14,7 @@
   <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
   <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0-beta.1/angular.min.js"></script>
+  <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.0/angular.min.js"></script> -->
   <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.12.0/ui-bootstrap-tpls.min.js"></script>
@@ -23,25 +24,33 @@
 <body ng-app="App">
 <sb-md  mdfile="README.md"></sb-md>
 <div ng-controller="ctrl">
+  <button type="button" ng-click="sayIt('fred')">test local</button>
   <input type="text" ng-model='my.firstname'></input>{{my.firstname}}<br>
-  <sb-two-way></sb-two-way>
+  <sb-two-way send-it="sayIt(newn)"></sb-two-way>
 </div>
 
-<template id=t1>
+<template id="t1">
+  <button type="button" ng-click="sendIt({newn:'phil'})">push down</button>
   <input type="text" ng-model="my.lastname"></input>{{my.lastname}}
 </template>
 <script>
 var ex = angular.module("Exercise", []);
 ex.controller('ctrl', ['$scope', function($scope){
 	$scope.my ={firstname: 'tim'};
+  $scope.sayIt=function(x){
+    $scope.my.firstname=x;
+  }
 }])
 ex.directive('sbTwoWay', function(){
   return{
     restrict:'E',
-    scope:{},
+    scope:{
+      sendIt:'&'
+    },
     template: document.getElementById('t1').innerHTML,
     link: function(scope, element, attrs){
       scope.my = {lastname:'mckenna'};
+      scope.sendIt({newn:'geo'})
     }    
   }
 });
@@ -50,18 +59,24 @@ ex.directive('sbTwoWay', function(){
     var ex = angular.module("Exercise", []);
     ex.controller('ctrl', ['$scope', function($scope){
       $scope.my ={firstname: 'tim'};
+      $scope.sayIt=function(x){
+        $scope.my.firstname=x;
+      }
     }])
     ex.directive('sbTwoWay', function(){
       return{
         restrict:'E',
-        scope:{},
-        template: '<input type="text" ng-model="my.lastname"></input>{{my.lastname}}',
+        scope:{
+          sendIt:'&'
+        },
+        template: document.getElementById('t1').innerHTML,
         link: function(scope, element, attrs){
           scope.my = {lastname:'mckenna'};
+          scope.sendIt({newn:'geo'})
         }    
       }
     });
-BTW: the directive doesn't have to be inside the controller div, it is independent.    
+
 </sb-md>	
 </body>
 </html>

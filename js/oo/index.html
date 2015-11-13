@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="blank content">
+    <meta property="og:type" content="junk">
+    <meta property="og:tags" content='["directives" ]'>
+	<title>oo</title>
+	<link rel="stylesheet" href="">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css"> 
+  <link rel="stylesheet" href="style.css"> 
+  <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.3/angular.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.12.0/ui-bootstrap-tpls.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/showdown/0.3.1/showdown.min.js"></script>
+  <script src="app.js"></script>
+</head>
+<body ng-app="App">
+<sb-md  mdfile="README.md"></sb-md>
+<div>
+Hello world
+</div>
+
+<script>
+var Person = function (firstName) {
+  this.firstName = firstName;
+  this.sayBye = function(){
+    console.log('Bye '+this.firstName)
+  }
+};
+
+Person.prototype.sayHello = function() {
+  console.log("Hello, I'm " + this.firstName);
+};
+
+var person1 = new Person("Alice");
+var person2 = new Person("Bob");
+var helloFunction = person1.sayHello;
+person1.sayBye();
+var byeFunc=person1.sayBye
+byeFunc.apply(person1)
+
+// logs "Hello, I'm Alice"
+person1.sayHello();
+
+// logs "Hello, I'm Bob"
+person2.sayHello();
+
+// logs "Hello, I'm undefined" (or fails
+// with a TypeError in strict mode)
+helloFunction();                                    
+
+// logs true
+console.log(helloFunction === person1.sayHello);
+
+// logs true
+console.log(helloFunction === Person.prototype.sayHello);
+
+// logs "Hello, I'm Alice"
+helloFunction.call(person1);
+
+// Shape - superclass
+function Shape() {
+  this.x = 0;
+  this.y = 0;
+  this.dert=function(x){
+    this.x=x
+    console.log('dert set x= '+this.x)
+
+  }
+}
+
+// superclass method
+Shape.prototype.move = function(x, y) {
+  this.x += x;
+  this.y += y;
+  console.info('Shape moved.');
+};
+
+// Rectangle - subclass
+function Rectangle() {
+  Shape.call(this); // call super constructor.
+}
+var rec = new Rectangle()
+rec.dert(14)
+// subclass extends superclass
+Rectangle.prototype = Object.create(Shape.prototype);
+Rectangle.prototype.constructor = Rectangle;
+var rec = new Rectangle()
+rec.move(4,5)
+var rect = new Rectangle();
+
+console.log('Is rect an instance of Rectangle?', rect instanceof Rectangle);// true
+console.log('Is rect an instance of Shape?', rect instanceof Shape);// true
+rect.move(1, 1); // Outputs, 'Shape moved.'
+</script>
+<sb-md>
+#### code explanation
+	
+
+</sb-md>	
+</body>
+</html>

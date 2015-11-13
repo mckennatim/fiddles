@@ -4,6 +4,10 @@
 
 - <a href="http://javascriptissexy.com/javascript-apply-call-and-bind-methods-are-essential-for-javascript-professionals/">from javascript is sexy</a>
 - <a href="http://ryanmorr.com/understanding-scope-and-context-in-javascript/">http://ryanmorr.com/understanding-scope-and-context-in-javascript/</a>
+####call and apply
+<blockquote cite="http://ryanmorr.com/understanding-scope-and-context-in-javascript/">
+    <p>These two methods inherent to all functions allow you to execute any function in any desired context. This makes for incredibly powerful capabilities. The call function requires the arguments to be listed explicitly while the apply function allows you to provide the arguments as an array:</p>
+</blockquote>
 
 10/8/15
 ####bind

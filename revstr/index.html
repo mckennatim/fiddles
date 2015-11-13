@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="reverse string recuresively, a)from front, b)split">
+    <meta property="og:type" content="website">
+    <meta property="og:tags" content='["recursion" , "strings", "slice"]'>
+	<title>revstr</title>
+	<link rel="stylesheet" href="">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css"> 
+  <link rel="stylesheet" href="style.css"> 
+  <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.3/angular.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.12.0/ui-bootstrap-tpls.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/showdown/0.3.1/showdown.min.js"></script>
+  <script src="app.js"></script>
+</head>
+<body ng-app="App">
+<sb-md  mdfile="README.md"></sb-md>
+<div>
+<h4>reverse string</h4>
+<input type="text" id="inp" value="paws" onChange="dorev()"></input><br>
+<span id="out"></span>
+</div>
+
+<script>
+var consol = {}
+consol.log = function(x){
+  $("#out").html($("#out").html()+x+"<br>")
+}
+console.log($("#inp").val())
+
+function split(str){
+  var res=[];  
+  var ctr = Math.floor(str.length/2)
+  res[0] =str.slice(0,ctr)
+  res[1]= str.slice(ctr)
+  return res;
+}
+function cswap(r,l){
+  consol.log(l+r)
+  return l+r;
+}
+
+function revs(str){
+  if (str.length<2){
+    consol.log(str)
+    return str;
+  }else{
+    consol.log(revs(split(str)[1])+revs(split(str)[0]))
+    return revs(split(str)[1])+revs(split(str)[0])  
+  }
+}
+
+function rev(str){
+  if (str.length==0){
+    return "";
+  }else{
+    consol.log(rev(str.slice(1))+str[0])
+    return (rev(str.slice(1))+str[0])
+  }
+}
+function reverse (str) {
+    if (str === "") {
+        return "";
+    } else {
+        consol.log(reverse(str.substr(1)) + str.charAt(0))
+        return reverse(str.substr(1)) + str.charAt(0);
+    }
+}
+function irev(str){
+  var nstr= ""
+  for (var i = str.length -1;i>=0; i--){
+    nstr += str[i];
+    consol.log(nstr)
+  }
+  return nstr;
+}
+
+function dorev(){
+  $("#out").html('')
+  consol.log('<b>iteratively</b>')
+  consol.log(irev($("#inp").val()))  
+  consol.log('<b>using succesive splits in half</b>')
+  consol.log(revs($("#inp").val()))
+  consol.log('<b>from the front </b>')
+  consol.log(rev($("#inp").val()))
+  consol.log('<a href="http://stackoverflow.com/questions/4859208/recursive-string-reversal-function-in-javascript">stack overflow: recursive-string-reversal </a>')
+  consol.log(reverse($("#inp").val()))
+}
+dorev($("#inp").val())
+
+
+</script>
+<sb-md>
+#### code explanation
+	
+
+</sb-md>	
+</body>
+</html>

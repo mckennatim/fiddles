@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="blank content">
+    <meta property="og:type" content="website">
+    <meta property="og:tags" content='["directives" ]'>
+	<title>sorts</title>
+	<link rel="stylesheet" href="">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css"> 
+  <link rel="stylesheet" href="style.css"> 
+  <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.3/angular.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.12.0/ui-bootstrap-tpls.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/showdown/0.3.1/showdown.min.js"></script>
+  <script src="app.js"></script>
+</head>
+<body ng-app="App">
+<sb-md  mdfile="README.md"></sb-md>
+<div>
+<input type="text" id="inp" value=[14,1,5,12,3,9,11,4,7] onchange=sorts(value)></input><br>
+<span id="res"></span>
+</div>
+
+<script>
+var inpD = document.getElementById('inp')
+var resD = document.getElementById('res')
+var res = resD.innerHTML
+var inp = inpD.value
+
+function txt2arr(x){
+  return x.trim().slice(1,-1).split(',').map(function(e){return parseInt(e)})
+}
+function numSort(a,b){return a-b}
+function add2span(ih){
+  resD.innerHTML += JSON.stringify(ih)+'<br>'
+}
+function clearSpan(){resD.innerHTML=''}
+
+
+console.log(txt2arr(inp).sort(numSort))
+resD.innerHTML=JSON.stringify(txt2arr(inp).sort(numSort))+'<br>'
+
+add2span('dog')
+function split(arr){
+  res = []
+  var m = Math.floor(arr.length/2)
+  res[0]=arr.slice(0,m);
+  res[1]=arr.slice(m)
+  return res;
+}
+console.log(split(txt2arr(inp)))
+add2span(split(txt2arr(inp)))
+
+//resD.innerHTML += split(test2arr(inp))
+function merge(left,right){
+  var res=[], il=0, ir = 0 
+  while(il < left.length && ir < right.length){
+    if (left[il]<right[ir]){
+      res.push(left[il++])
+    }else{
+      res.push(right[ir++])
+    }
+  }
+  var ret =res.concat(left.slice(il)).concat(right.slice(ir))
+  add2span(ret + ' merging')
+  return ret
+}
+function mergeSort(items){
+  if(items.length<2){
+    //add2span(items + " done splitting")
+    return items
+  }
+  var s = split(items)
+  add2span(s)
+  return merge(mergeSort(s[0]), mergeSort(s[1]))
+}
+function swap(arr, f, s){
+  var tmp = arr[f];
+  arr[f] = arr[s]
+  arr[s] = tmp
+}
+function bubble(arr){
+  var len = arr.length, i, j, stop;
+  for (i=0;i<len;i++){
+    for (j=0,stop=len-i;j<stop;j++){
+      add2span(arr + '--- '+j)
+      if (arr[j]>arr[j+1]){
+        swap(arr, j, j+1)
+      }
+    }
+  }
+
+  return arr
+}
+function part(arr,l,r){
+  var piv = arr[Math.floor((r+l)/2)],
+    i=l,j=r;
+    add2span('piv: '+piv+' i: '+i+" j: "+j)
+  while(i<=j){
+    while(arr[i]<piv){i++};
+    while(arr[j]>piv){j--};
+    if (i<=j){
+      console.log(arr+'--'+i+j)
+      swap(arr,i,j);
+      add2span(arr);
+      i++;
+      j--;
+      console.log(arr+'--'+i+j)
+    }
+  }
+  return i; 
+}
+
+function quick(arr, l, r){
+  var idx
+  if(arr.length>1){
+    idx = part(arr,l,r);
+    if (l<idx-1){quick(arr,l,idx-1)};
+    if (r>idx){quick(arr,idx,r)}
+  }
+  return arr
+}
+function sorts(inp){
+  var arr = txt2arr(inp)
+  arr.sort(numSort)
+  clearSpan()
+  add2span(arr)
+  add2span(txt2arr(inp))
+  add2span('Split')
+  add2span(split(txt2arr(inp)))
+  add2span('Merge')
+  var m1=merge(split(txt2arr(inp))[0], split(txt2arr(inp))[1])
+  add2span(m1)
+  add2span("MERGE Sort")
+  add2span(mergeSort(txt2arr(inp)))
+  add2span('partiton')
+  add2span(part(txt2arr(inp),0,txt2arr(inp).length-1))
+  add2span('QUICK sort')
+  add2span(txt2arr(inp))
+  add2span(quick(txt2arr(inp),0,txt2arr(inp).length-1))  
+  add2span('BUBBLE sort')
+  add2span(bubble(txt2arr(inp)))
+
+}
+
+
+sorts(inp)
+</script>
+<sb-md>
+#### code explanation
+	
+
+</sb-md>	
+</body>
+</html>

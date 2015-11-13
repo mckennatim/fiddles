@@ -7,7 +7,7 @@
     <meta name="description" content="blank content">
     <meta property="og:type" content="junk">
     <meta property="og:tags" content='["directives" ]'>
-	<title>blank</title>
+	<title>quiz</title>
 	<link rel="stylesheet" href="">
   <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
   <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css"> 
@@ -23,45 +23,55 @@
 </head>
 <body ng-app="App">
 <sb-md  mdfile="README.md"></sb-md>
-<div>
-<h4>hello</h4>
-<input type="text" id="inp" value="paws" onChange="dorev()"></input><br>
-<span id="out"></span>
-</div>
-<script>
-var consol = {
-  log: function(x){
-    $("#out").html($("#out").html()+x+"<br>")
-  }
-}
-function dorev(){
-  $("#out").html('')
-  consol.log($("#inp").val())
-}
-dorev($("#inp").val())
-
-class LinkedList {
-  constructor() {
-    this.start=null;
-    this.end=this.start;
-  }
-  makeNode() {
-    return {data:null, next:null}
-  }
-  addNode() {
-    if (this.start===null){
-      this.start = this.makeNode();
-      this.end = this.start;
-    }else {
-      this.end.next = this.makeNode()
-      this.end=this.end.next
+<sb-md>
+#### code explanation
+    if (!("b1" in window)) {
+        var b1 = 1;
     }
-  }
-} 
+    div.innerHTML =b1
+</sb-md>
 
-var animals = new LinkedList()
-animals.addNode('rusty')
+<div>
+<span></span>
+<script>
+var scriptTag = document.scripts[document.scripts.length - 1];
+var span = scriptTag.parentNode.span;
 
+if (!("b1" in window)) {
+    var b1 = 1;
+}
+
+var a = {}
+a.a = 4
+var b= a
+b.a=7
+console.log(a.a)
+</script>
+</div>
+
+
+
+<script>
+
+var a = 1,
+    b = function a(x) {
+        x && a(--x);
+    };
+console.log(a);
+function a3(x) {
+    return x * 2;
+}
+var a3;
+console.log(a3);
+function ba(x, y, a) {
+    arguments[2] = 10;
+    console.log(a);
+}
+ba(1, 2, 3);
+function aa() {
+    console.log(this);
+}
+aa.call(null);
 </script>
 <sb-md>
 #### code explanation

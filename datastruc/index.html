@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="blank content">
+    <meta property="og:type" content="junk">
+    <meta property="og:tags" content='["directives" ]'>
+	<title>blank</title>
+	<link rel="stylesheet" href="">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css"> 
+  <link rel="stylesheet" href="style.css"> 
+  <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.3/angular.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.12.0/ui-bootstrap-tpls.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/showdown/0.3.1/showdown.min.js"></script>
+  <script src="app.js"></script>
+</head>
+<body ng-app="App">
+<sb-md  mdfile="README.md"></sb-md>
+<div>
+<h4>hello</h4>
+<input type="text" id="inp" value=[8,1,5,12,3,9,11,4,7] onchange=dorev(value)></input><br><br>
+<span id="out"></span>
+</div>
+
+<script>
+var consol = {
+  log: function(x){
+    $("#out").html($("#out").html()+x+"<br>")
+  }
+}
+
+function LinkedList(){
+  this.start = null;
+  this.end=null
+}
+LinkedList.prototype = {
+  makeNode:function(){
+    return {data:null, next:null}
+  },
+  addNode: function(data){
+    if (this.start===null){
+      this.start=this.makeNode()
+      this.end=this.start;
+    }else{
+      this.end.next=this.makeNode();
+      this.end= this.end.next;
+    }
+    this.end.data=data;
+  },
+  traverse: function(callback){
+    var current = this.start;
+    while(current!=null){
+      callback(current);
+      current=current.next
+    }
+  },
+  count: function(){
+    var current = this.start;
+    var i = 0
+    while(current!=null){
+      current=current.next
+      i++
+    }
+    return i;
+  },
+  insertAfter: function(afterdata, data){
+    var current = this.start;
+    while(current!=null){
+      if(current.data===afterdata){
+        var newn = this.makeNode()
+        newn.data=data;
+        newn.next= current.next;
+        current.next=newn;
+        return
+      }
+      current=current.next
+    }    
+  }, 
+  reverse: function(){
+    this.end.data = this.start.data;
+    this.end.next=null
+    var current=this.start, previous=temp=null;
+    while(current!=null){
+      temp = current.next;
+      current.next = previous;
+      previous = current;
+      current = temp
+      //console.log(current)
+    }
+    this.start=previous
+    return previous
+  }  
+}
+
+
+var animals = new LinkedList()
+console.log(LinkedList.prototype)
+
+consol.log(animals.makeNode())
+animals.addNode('rusty')
+animals.addNode('dusty')
+animals.addNode('butler')
+animals.addNode('cindy')
+animals.addNode('mabibi')
+animals.addNode('Ulysses')
+animals.insertAfter('dusty', 'petey')
+animals.insertAfter("rusty","rat")
+function clg(node){
+  consol.log(node.data)
+}
+animals.traverse(clg)
+consol.log(animals.count())
+console.log(animals.end)
+animals.reverse()
+animals.traverse(clg)
+
+function middle(animals){
+  var current= animals.start;
+  var half =animals.start
+  var idx = 1
+  while(current!=null){
+    if(idx%2==0) {
+      half = half.next;
+    }
+    current= current.next
+    idx++;
+  }
+  return half
+}
+consol.log(middle(animals))
+/*------------------binary tree------------------------*/
+function Bst (){
+  this.root=null;
+}
+Bst.prototype ={
+  constructor: Bst,
+  makeNode: function(){
+    return {data:null, left:null, right:null}
+  },
+  add: function(data){
+    console.log(data)
+    var current=this.root, rightspot=false, idx=0;
+    var newNode =this.makeNode()
+    newNode.data=data
+    if (current==null){
+      this.root=newNode
+      rightspot=true;
+      return
+    }   
+    while (rightspot == false && idx<200){
+      idx++;
+      if (data>current.data){
+        if(current.right===null){
+          current.right=newNode;
+          rightspot=true;
+          break;
+        }else{
+          current =current.right;
+        }  
+      }
+      else if (data<current.data){
+        if(current.left===null){
+          current.left=newNode;
+          rightspot=true;
+          break;
+        }else{
+          current =current.left;
+        } 
+      }
+      else if(data==data.current){
+        console.log('duplicate data not allowed')
+      }
+    }
+  },
+  contains: function(val){
+    var found=false, current=this.root;
+    while(!found && current){
+      if(val<current.data){
+        current=current.left
+      }else if(val>current.data){
+        current=current.right;
+      }else{
+        found=true;
+      }
+    }
+    return found
+  },
+  traverse: function(callback){
+    function recurse(node){
+      console.log(node)
+      if (node.left!=null){
+        recurse(node.left)
+      }
+      callback(node);
+      if(node.right!=null){
+        recurse(node.right)
+      }
+    }
+    recurse(this.root)  
+  },
+  remove: function(val){
+
+  },
+  depth: function(){
+    var stackht = []
+    var cstack = 0;
+    function recDepth(node){
+
+      if (node == null){
+        stackht.push(cstack)
+        cstack = 0;
+        return 0;
+      }
+      else {
+        cstack += 1+ recDepth(node.left) + recDepth(node.right)
+        return 1+ recDepth(node.left) + recDepth(node.right)
+      }
+    }
+    recDepth(this.root)
+    return stackht;
+  },
+  size: function(){
+    var sz=0;
+    this.traverse(function(node){
+      sz++
+    })
+    return sz;
+  },
+  toArray: function(){
+    var res =[];
+    this.traverse(function(node){
+      res.push(node.data);
+    })
+    return res
+  },
+  toString: function(){
+
+  }
+}
+
+
+function txt2arr(x){
+  return x.trim().slice(1,-1).split(',').map(function(e){return parseInt(e)})
+}
+function dorev(){
+  $("#out").html('')
+  var arr = txt2arr($("#inp").val())
+  var bta = new Bst()
+  for(var i=0; i<arr.length; i++){
+    bta.add(arr[i])
+  }
+  bta.traverse(justPrint)
+  consol.log(arr)
+  consol.log(JSON.stringify(bta.root))
+  consol.log('bt size is: '+  bta.size())
+  consol.log('bt depth is: '+  bta.depth())
+  consol.log(bta.depth())
+  return arr;
+}
+var inarr = dorev($("#inp").val())
+var bt = new Bst()
+for(var i=0; i<inarr.length; i++){
+  bt.add(inarr[i])
+}
+function justPrint(node){
+  console.log(node)
+}
+bt.traverse(justPrint)
+console.log(bt.toArray())
+</script>
+<sb-md>
+## data structures
+### linked list
+Insertion in the middle of a list only involves only the manipulation of two pointers.  Inserting an item in the middle of an array requires the machine to move a lot of data to create a free space.
+### binary tree sort
+	
+
+</sb-md>	
+</body>
+</html>

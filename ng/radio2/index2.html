@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="radio control using 2-way databinding; on incoming ng-value, radio changes, on radio selection incoming ng-value is altered">
+    <meta property="og:type" content="website">
+    <meta property="og:tags" content='["two way", "databinding", "two way databinding", "radio", "ng-repeat", "ng-model", "ng-value"]'>
+	<title>ng-radio</title>
+	<link rel="stylesheet" href="">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css"> 
+  <link rel="stylesheet" href="style.css"> 
+  <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0-beta.1/angular.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.12.0/ui-bootstrap-tpls.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/showdown/0.3.1/showdown.min.js"></script>
+  <script src="app.js"></script>
+</head>
+<body ng-app="App">
+<sb-md  mdfile="README.md"></sb-md>
+
+<div>
+  <a-yard></a-yard>
+</div>
+<template id="y">
+<h4>yard</h4>
+<button type="button" onclick='changeData()'>change Data</button>
+<button type="button" onclick="dataChanged('changing from yard')">dataChanged</button>
+{{data}}
+  <a-radio the-spot="center" upd-spot="dataChanged(msg)" send-it="dataChanged(msg)"></a-radio><br>
+  <a-radio the-spot="bridge" upd-spot="dataChanged(msg)" send-it="dataChanged(msg)"></a-radio>
+</template>
+<script>
+var ex = angular.module("Exercise", []);
+ex.directive('aYard', function(service){
+  return{
+    restrict:'E',
+    template: document.getElementById('y').innerHTML,
+    link: function(scope, element, attrs){
+      scope.data=service.data
+      scope.dataChanged = function(msg){
+        console.log(msg)
+        service.updateData(scope)
+      };      
+      changeData = function(){
+        service.changeData(scope);
+        console.log(JSON.stringify(scope.data['bridge']))
+      };
+      scope.sayIt=function(x){
+        console.log(x)
+      }      
+    }
+  }
+})
+</script>
+
+<template  id="t1">
+  <style>
+    label{
+      padding:0 15px 0 0 ;
+    }
+  </style>
+  <h5>{{spot}}</h5>
+  <button type="button" ng-click="updSpot({msg:'aRadio DOM wants yard update'})">updSpot</button>
+  <button type="button" ng-click="sendIt({msg:'phil'})">push down</button><br>
+  <input type="text" ng-model='my.lState'></input><span>{{my.lState}}</span><br>
+  <label>on
+   <input type="radio" ng-model="my.lState" value="on">
+  </label>
+  <label>timer
+   <input type="radio" ng-model="my.lState" value="timer">
+  </label>
+  <label>off
+   <input type="radio" ng-model="my.lState" value="off">
+  </label>
+</template>
+<script>
+ex.directive('aRadio', function(service){
+  return{
+    restrict: 'E',
+    scope: {
+      rSpot: '@theSpot',
+      updSpot: '&',
+      sendIt:'&'
+    }, 
+    template: document.getElementById('t1').innerHTML,
+    link: function(scope, element, attrs){
+      scope.radvals = ['on', 'timer', 'off'];
+      scope.my = {lState: 'off'}
+      var spot =scope.rSpot;
+      console.log(spot);
+      scope.spot =spot;
+      scope.sdata = service.getSpot(spot);
+      console.log(scope.sdata);
+      scope.my.lState=scope.sdata.state;
+      // scope.setL = function(){
+      //   console.log(scope.spot+' is now ' +scope.lState)
+      //   service.setSpot(scope.spot, scope.lState)
+      //   return scope.lState;
+      // }
+      //scope.updSpot({msg:'aRadio scope wants yard update'})
+      scope.obser = function(){
+        console.log('shit changed')
+        var state=scope.my.lState;
+        console.log(scope.spot+' is now ' +state)
+        service.setSpotState(scope.rSpot, state, function(){scope.updSpot()})
+        //scope.updSpot();
+        //scope.sdata = service.getSpot(scope.spot)
+      }      
+      Object.observe(scope.my, scope.obser)
+
+    }
+  }    
+});
+</script>
+
+<script>
+ex.factory('service', function(){
+  return {
+    data: {"pond":{"tleft":-1,"nexton":0,"spot":"pond","state":"off"},"center":{"tleft":-1,"nexton":0,"spot":"center","state":"off"},"bridge":{"tleft":60,"nexton":0,"spot":"bridge","state":"on"}},
+    getSpot: function(spot){
+      return(this.data[spot])
+
+    },
+    setSpotState: function(spot, state, callback){
+      this.data[spot].state=state;
+      console.log(JSON.stringify(this.data['bridge']))
+      callback();
+    },
+    changeData: function(scope){
+      this.data['center'].state='timer';
+      this.data['bridge'].state='timer';
+      console.log(JSON.stringify(this.data['bridge']))
+      scope.data=this.data;
+      scope.$apply();
+      console.log(JSON.stringify(this.data['bridge']))
+   },updateData: function(scope){
+      scope.data = this.data;
+      console.log(JSON.stringify(scope.data['bridge']))
+      scope.$apply()
+   }
+  }
+})
+</script>
+
+<sb-md>
+    var ex = angular.module("Exercise", []);
+    ex.controller('ctrl', ['$scope', function($scope){
+      $scope.my ={incoming: 'on'};
+      $scope.possibles = ['on', 'timer', 'off'];
+    }])
+
+
+notes: 
+In a one-page demo a directive would have html in `template: ''` which is awful to look at and format. It is easier to use a controller.     
+</sb-md>	
+</body>
+</html>

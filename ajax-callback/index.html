@@ -4,10 +4,10 @@
 
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="description" content="async ajax-callback, promises">
+    <meta name="description" content="async via callback - On using a service to handle ajax and respond with a callback">
     <meta property="og:type" content="website">
-    <meta property="og:tags" content='["promises", "ajax", "callback", "es6", "then", "onclick", "getElementById" ]'>
-	<title>async</title>
+    <meta property="og:tags" content='["ajax", "callback",  "onclick", "getElementById" ]'>
+	<title>async - ajax callback</title>
 	<link rel="stylesheet" href="">
   <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
   <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css"> 
@@ -24,38 +24,89 @@
 <body ng-app="App">
 <sb-md  mdfile="README.md"></sb-md>
 <div>
-Hello world
-<button onclick="clickFunc()" id="but" type="text">button</button>
+<button onclick="clickFunc1()" id="but1" type="text">success - match</button><br>
+<button onclick="clickFunc2()" id="but2" type="text">success - conflict</button><br>
+<button onclick="clickFunc3()" id="but3" type="text">error - server down</button><br>
+
+<span id="resp"></span>
 </div>
 
 <script>
-var b = document.getElementById('but')
+var b = document.getElementById('but1')
+var respD = document.getElementById('resp')
 var respo = {message:'nothing yet'};
 var data ={}
 console.log(respo.message)
 console.log(data)
 
-function clickFunc()
+function clickFunc1()
   {console.log('clicked it')
-  clickService(myCallback)
+  clickService1(myCallback)
 }
 
-function clickService(callback){
+function clickService1(callback){
   var username='tim';
   var email='mckenna.tim@gmail.com';
   $.ajax({
     url: 'http://sitebuilt.net:3002/api/ismatch/?name='+username+'&email='+email,
     success: function(data, status, response){
-      callback(response);
+      var respo = "SUCCESS - data: "+JSON.stringify(data)+" status: "+JSON.stringify(status)+" response: "+JSON.stringify(response);  
+      callback(respo, response);
     },
     error: function (response){
-      callback(response);
+      var respo = "ERROR - data: "+JSON.stringify(data)+" status: "+JSON.stringify(status)+" response: "+JSON.stringify(response);  
+      callback(respo, response);
     }
     .bind(this)
   })
 }
 
-function myCallback(response){
+function clickFunc2()
+  {console.log('clicked it')
+  clickService2(myCallback)
+}
+
+function clickService2(callback){
+  var username='ti';
+  var email='mckenna.tim@gmail.com';
+  $.ajax({
+    url: 'http://sitebuilt.net:3002/api/ismatch/?name='+username+'&email='+email,
+    success: function(data, status, response){
+      var respo = "SUCCESS - data: "+JSON.stringify(data)+" status: "+JSON.stringify(status)+" response: "+JSON.stringify(response);  
+      callback(respo, response);
+    },
+    error: function (response){
+      var respo = "ERROR - data: "+JSON.stringify(data)+" status: "+JSON.stringify(status)+" response: "+JSON.stringify(response);  
+      callback(respo, response);
+    }
+    .bind(this)
+  })
+}
+
+function clickFunc3()
+  {console.log('clicked it')
+  clickService3(myCallback)
+}
+
+function clickService3(callback){
+  var username='tim';
+  var email='mckenna.tim@gmail.com';
+  $.ajax({
+    url: 'http://sitebuilt.net:3004/api/ismatch/?name='+username+'&email='+email,
+    success: function(data, status, response){
+      var respo = "SUCCESS - data: "+JSON.stringify(data)+" status: "+JSON.stringify(status)+" response: "+JSON.stringify(response);  
+      callback(respo, response);
+    },
+    error: function (response){
+      var respo = "ERROR - data: "+JSON.stringify(data)+" status: "+JSON.stringify(status)+" response: "+JSON.stringify(response);  
+      callback(respo, response);
+    }
+    .bind(this)
+  })
+}
+
+function myCallback(respo, response){
+  respD.innerHTML=respo;
   var msg
   if(response.status==0){
     msg = 'server '+response.statusText;
@@ -86,12 +137,10 @@ Ajax has an object for a parameter. Besides the url key/value there is a success
       }
       .bind(this)
 
-On error the most information is in the first parameter (the third param has nothing)
+Ajax returns `data, status, response` for both `success` and `failure`. 
 
-    Object {readyState: 0, responseText: "", status: 0, statusText: "error"}
-
-On success the most information is in the third parameter `success: function(data, status, response)`. 
-    
+On `error` `data: undefined`, `status: ""` and `response` returns an object ` {"readyState":0,"responseText":"","status":0,"statusText":"error"}` (with no responseJSON object). On success the most information is in the `response` parameter. It returns an object that has an `responseJSON` object which duplicates the `data` object of the first parameter.
+     
     Object {readyState: 4, responseText: "{"message":"match","result":0,"err":null}", responseJSON: Object, status: 200, statusText: "OK"}
 
 of which the `responseJSON` object is the data (also returned by the first parameter)    

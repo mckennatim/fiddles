@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="find last duplicate of sorted array using divide and conquer">
+    <meta property="og:type" content="website">
+    <meta property="og:tags" content='["arrays", "divide and conquer", "big(O)", "apply"]'>
+	<title>findLastDup</title>
+	<link rel="stylesheet" href="">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css"> 
+  <link rel="stylesheet" href="style.css"> 
+  <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.3/angular.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.12.0/ui-bootstrap-tpls.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/showdown/0.3.1/showdown.min.js"></script>
+  <script src="app.js"></script>
+</head>
+<body ng-app="App">
+<sb-md  mdfile="README.md"></sb-md>
+<div>
+<h4>find the last duplicate index</h4>
+<input type="text" id="inp" value="[6,3,7,8,3,4,6,7,9,11,14,3]" onChange="dorev()"></input><br>
+The find last occurance of <input type="text" id="inp2" value="8" onChange="dorev()" size="1"></input><br> in the sorted array below<br>
+<span id="out"></span>
+</div>
+
+<script>
+var consol = {}
+consol.log = function(x){
+  $("#out").html($("#out").html()+x+"<br>")
+}
+
+
+function findLastDup(a,v){
+  
+  var l=0, r=a.length-1, m=Math.floor((r+l)/2)
+    consol.log(' '+l+'  '+m+'  '+r)
+
+  function theIdxs(m){
+    var to = m
+    var ret =[]
+    ret[0]=m
+    ti=to
+    //check both ways for more or the same
+    while (ti-1<=0 && a[ti]==a[ti-1]){
+      ti--
+      ret.push(ti)
+    }
+    ti=to
+    while (ti+1<a.length-1 && a[ti]==a[ti+1]){
+      ti++
+      ret.push(ti)
+    }
+    var max = Math.max.apply(null,ret)
+    consol.log(JSON.stringify(ret))
+    return max
+  } 
+  
+  while (true){
+    if (v==a[m]){
+      consol.log(m)
+      consol.log('found at m')
+      return theIdxs(m)
+    }else if(v==a[m+1]){
+      consol.log(m)
+      consol.log('You have to stop at 2 items and check the second otherwise it will keep going back to the same place')
+      consol.log('found at m+1')
+      return theIdxs(m+1)
+    }else if (v>=a[m]){
+      l=m;
+    }else {
+      r=m;
+    }
+    m=Math.floor((r+l)/2)
+    consol.log(' '+l+'  '+m+'  '+r)
+    if (r-l <2){
+      consol.log('not there')
+      return -1
+    }    
+    
+  }
+}
+
+function dorev(){
+  $("#out").html('')
+  var str =$("#inp").val()
+  var val = parseInt($("#inp2").val())
+  var arr = str.slice(1,-1).split(',').map(function(e){return parseInt(e)})
+  var sarr = arr.sort(function(a,b){return a-b})
+  consol.log(sarr)
+  consol.log("The left, right and middle progression")
+  var last = findLastDup(sarr,val)
+  consol.log('the last occurrance of <b>'+ sarr[last] + '</b> is index<b> '+last+'</b')
+}
+dorev($("#inp").val())
+
+</script>
+<sb-md>
+    function findLastDup(a,v){
+      
+      var l=0, r=a.length-1, m=Math.floor((r+l)/2)
+        consol.log(' '+l+'  '+m+'  '+r)
+
+      function theIdxs(m){
+        var to = m
+        var ret =[]
+        ret[0]=m
+        ti=to
+        //check both ways for more or the same
+        while (ti-1<=0 && a[ti]==a[ti-1]){
+          ti--
+          ret.push(ti)
+        }
+        ti=to
+        while (ti+1< a.length-1 && a[ti]==a[ti+1]){
+          ti++
+          ret.push(ti)
+        }
+        var max = Math.max.apply(null,ret)
+        consol.log(JSON.stringify(ret))
+        return max
+      } 
+      
+      while (true){
+        if (v==a[m]){
+          consol.log(m)
+          consol.log('found at m')
+          return theIdxs(m)
+        }else if(v==a[m+1]){
+          consol.log(m)
+          consol.log('You have to stop at 2 items and check the second otherwise it will keep going back to the same place')
+          consol.log('found at m+1')
+          return theIdxs(m+1)
+        }else if (v>=a[m]){
+          l=m;
+        }else {
+          r=m;
+        }
+        m=Math.floor((r+l)/2)
+        consol.log(' '+l+'  '+m+'  '+r)
+        if (r-l < 2){
+          consol.log('not there')
+          return -1
+        }    
+        
+      }
+    }
+
+</sb-md>	
+</body>
+</html>

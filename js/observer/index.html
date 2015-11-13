@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Implement observer pattern with array of callback functions, registerObservers and notifyObservers">
+    <meta property="og:type" content="website">
+    <meta property="og:tags" content='["array.forEach", "forEach", "observer", "callback", "notify", "$watch"]'>
+	<title>js-observer pattern</title>
+	<link rel="stylesheet" href="">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css"> 
+  <link rel="stylesheet" href="style.css"> 
+  <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.0-rc.0/angular.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.13/angular-ui-router.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.12.0/ui-bootstrap-tpls.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/showdown/0.3.1/showdown.min.js"></script>
+  <script src="app.js"></script>
+</head>
+<body ng-app="App">
+<sb-md  mdfile="README.md"></sb-md>
+<div>
+<span id="dothis">empty</span><br>
+<span id="dothis2">empty</span><br>
+<span id="dothis3">empty</span>
+</div>
+
+<script>
+var o ={
+	observers:[],
+	registerObserver : function(callback){
+		this.observers.push(callback)
+	},
+	notifyObservers: function(){
+		this.observers.forEach(function(callback){
+			callback();
+		});
+	}
+}
+
+function dothis(){
+	$("#dothis").text('done this');
+}
+
+function dothis2(){
+	$("#dothis2").text('done this too');
+}
+
+function dothis3(){
+	$("#dothis3").text('done this also');
+}
+
+o.registerObserver(dothis);
+o.registerObserver(dothis2);
+o.registerObserver(dothis3);
+
+o.notifyObservers();
+
+</script>
+<sb-md>
+		var o ={
+			observers:[],
+			registerObserver : function(callback){
+				this.observers.push(callback)
+			},
+			notifyObservers: function(){
+				this.observers.forEach(function(callback){
+					callback();
+				});
+			}
+		}
+
+		function dothis(){
+			$("#dothis").text('done this');
+		}
+
+		function dothis2(){
+			$("#dothis2").text('done this too');
+		}
+
+		function dothis3(){
+			$("#dothis3").text('done this also');
+		}
+
+		o.registerObserver(dothis);
+		o.registerObserver(dothis2);
+		o.registerObserver(dothis3);
+
+		o.notifyObservers();
+</sb-md>	
+</body>
+</html>
