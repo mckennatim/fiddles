@@ -124,7 +124,7 @@ This heart of the thing is the while loop that does the divide and conquer. `l` 
       }
     }
 
-Once you have found one value, you can't be sure if you found the first repeated value, the last repeated value or somewhere in the middle. `theIdx()` checks that. First it checks backwoods while prior values are the same and careful not to back off the beginning of the array. Then it resets the search point and checks the other side. It returns an array of the indexes of all the repeated elements then finds the max applying Math.max to the array`Math.max.apply(null,ret)`
+Once you have found one value, you can't be sure if you found the first repeated value, the last repeated value or somewhere in the middle. `theIdx()` checks that. First it checks backwoods while prior values are the same, careful not to back off the beginning of the array. Then it resets the search point and checks the other side. It returns an array of the indexes of all the repeated elements then finds the max applying Math.max to the array`Math.max.apply(null,ret)`
 
       function theIdxs(m){
         var to = m
