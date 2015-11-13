@@ -94,7 +94,7 @@ function dorev(){
   var arr = str.slice(1,-1).split(',').map(function(e){return parseInt(e)})
   var sarr = arr.sort(function(a,b){return a-b})
   consol.log(sarr)
-  consol.log("The left, right and middle progression")
+  consol.log("The left, right and middle indexes each iteration")
   var last = findLastDup(sarr,val)
   consol.log('the last occurrance of <b>'+ sarr[last] + '</b> is index<b> '+last+'</b')
 }
