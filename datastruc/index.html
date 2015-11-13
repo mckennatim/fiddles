@@ -4,10 +4,10 @@
 
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="description" content="blank content">
-    <meta property="og:type" content="junk">
-    <meta property="og:tags" content='["directives" ]'>
-	<title>blank</title>
+    <meta name="description" content="data structures: linked lists and binary trees">
+    <meta property="og:type" content="website">
+    <meta property="og:tags" content='["linked lists", "binary tree", "prototype", "tree traversal", "inorder" ]'>
+	<title>datastrucs</title>
 	<link rel="stylesheet" href="">
   <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
   <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css"> 
@@ -136,6 +136,7 @@ function middle(animals){
 }
 consol.log(middle(animals))
 /*------------------binary tree------------------------*/
+var pth =[];
 function Bst (){
   this.root=null;
 }
@@ -192,16 +193,20 @@ Bst.prototype ={
     }
     return found
   },
-  traverse: function(callback){
+  traverse: function(callback, stack){
     function recurse(node){
-      console.log(node)
+      stack('to '+node.data)
       if (node.left!=null){
+        stack('goin left from '+node.data)
         recurse(node.left)
       }
       callback(node);
+      stack('done goin left FOUND '+node.data)
       if(node.right!=null){
+        stack('goin right from '+node.data)
         recurse(node.right)
       }
+      stack('left and right finished for node '+node.data)
     }
     recurse(this.root)  
   },
@@ -230,14 +235,14 @@ Bst.prototype ={
     var sz=0;
     this.traverse(function(node){
       sz++
-    })
+    },doNothing)
     return sz;
   },
   toArray: function(){
     var res =[];
     this.traverse(function(node){
       res.push(node.data);
-    })
+    },doNothing)
     return res
   },
   toString: function(){
@@ -250,18 +255,20 @@ function txt2arr(x){
   return x.trim().slice(1,-1).split(',').map(function(e){return parseInt(e)})
 }
 function dorev(){
-  $("#out").html('')
+  $("#out").html('');
+  pth=[];
   var arr = txt2arr($("#inp").val())
   var bta = new Bst()
   for(var i=0; i<arr.length; i++){
     bta.add(arr[i])
   }
-  bta.traverse(justPrint)
+  bta.traverse(justPrint,stack)
   consol.log(arr)
   consol.log(JSON.stringify(bta.root))
   consol.log('bt size is: '+  bta.size())
-  consol.log('bt depth is: '+  bta.depth())
-  consol.log(bta.depth())
+  consol.log("inorder traversal")
+  consol.log(bta.toArray())
+  consol.log(pth)
   return arr;
 }
 var inarr = dorev($("#inp").val())
@@ -272,16 +279,37 @@ for(var i=0; i<inarr.length; i++){
 function justPrint(node){
   console.log(node)
 }
-bt.traverse(justPrint)
+
+function doNothing(node){
+  ;
+}
+
+function stack(node){
+  pth.push(node)
+}
+bt.traverse(justPrint, stack)
 console.log(bt.toArray())
+console.log(pth)
 </script>
 <sb-md>
 ## data structures
 ### linked list
 Insertion in the middle of a list only involves only the manipulation of two pointers.  Inserting an item in the middle of an array requires the machine to move a lot of data to create a free space.
 ### binary tree sort
-	
+happens when you do inorder traversal. 	
 
+    traverse: function(callback, stack){
+      function recurse(node){
+        if (node.left!=null){
+          recurse(node.left)
+        }
+        callback(node);
+        if(node.right!=null){
+          recurse(node.right)
+        }
+      }
+      recurse(this.root)  
+    },
 </sb-md>	
 </body>
 </html>
