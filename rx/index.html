@@ -26,13 +26,11 @@
 <body ng-app="App">
 <sb-md  mdfile="README.md"></sb-md>
 <div>
-<h4>hellox</h4>
+<h4>hello</h4>
 <input type="text" id="inp" value="paws" onChange="dorev()"></input><br>
 <span id="out"></span>
 </div>
 <script>
-console.log('frog')
-console.log(window.location.hash.substr(1))
 var consol = {
   log: function(x){
     $("#out").html($("#out").html()+x+"<br>")
@@ -43,6 +41,28 @@ function dorev(){
   consol.log($("#inp").val())
 }
 dorev($("#inp").val())
+
+class LinkedList {
+  constructor() {
+    this.start=null;
+    this.end=this.start;
+  }
+  makeNode() {
+    return {data:null, next:null}
+  }
+  addNode() {
+    if (this.start===null){
+      this.start = this.makeNode();
+      this.end = this.start;
+    }else {
+      this.end.next = this.makeNode()
+      this.end=this.end.next
+    }
+  }
+} 
+
+var animals = new LinkedList()
+animals.addNode('rusty')
 
 </script>
 <sb-md>

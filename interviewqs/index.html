@@ -27,7 +27,7 @@
 <sb-md  mdfile="README.md"></sb-md>
 <div>
 <h4>find dupes</h4>
-<input type="text" id="inp" value="[6,3,7,8,3,4,6,7]" onChange="dorev()"></input><br>
+<input type="text" id="inp" value="[6,-3,-7,8,3,-4,6,-7]" onChange="dorev()"></input><br>
 <input type="text" id="inp2" value="8" onChange="dorev()"></input><br>
 <span id="out"></span>
 </div>
@@ -48,6 +48,7 @@ function filterDupes(a){
 
 
 function hashDupes(arr){
+  consol.log(arr)
   var du = {}
   for (var i=0; i< arr.length;i++){
     if (du.hasOwnProperty(arr[i])){
@@ -88,6 +89,8 @@ function fibo(n) {
   return Array.apply(0, Array(n)).
     reduce(function(x, y, z){ return x.concat((z < 2) ? z : x[z-1] + x[z-2]); }, []);
 }
+
+console.log(Array.apply(0,Array(6)))
 
 function fibob(n){
   var f =[0,1]
@@ -188,20 +191,63 @@ function findLastDup2(a,v){
     
   }
 }
+function sepNegPos(a){
+  var n=[], p=[];
+  for (var i=0; i<a.length;i++){
+    if(a[i]<0){
+      n.push(a[i])
+    } else{
+      p.push(a[i])
+    }
+  }
+  return n.concat(p);
+}
+function sepNegPos2(a){
+  for (var i =0;i<a.length;i++){
+    if (a[i]<0){
+      var idx=i;
+      while(idx>0 && a[idx-1]>0){
+        var tmp = a[idx];
+        a[idx]=a[idx-1];
+        a[idx-1]=tmp;
+        idx = idx-1
+      }
+    }
+  }
+  return a
+}
 function dorev(){
   $("#out").html('')
   var str =$("#inp").val()
   var val = parseInt($("#inp2").val())
   var arr = str.slice(1,-1).split(',').map(function(e){return parseInt(e)})
-  var sarr = arr.sort(function(a,b){return a-b})
-  console.log(sarr)
-  findLastDup(sarr,val)
+    consol.log(arr)
+
+  var arr2 = arr.map(function(e){return e})  
+  var arr3 = arr.map(function(e){return e})  
+  var arr4 = arr.map(function(e){return e})  
+  var arr5 = arr.map(function(e){return e})  
+  var arr6 = arr.map(function(e){return e})  
+  console.log(arr2)
+
+  arr.sort(function(a,b){return a-b})
+  console.log(arr)
+  console.log(arr2)
+  findLastDup(arr,val)
   consol.log("filter indexOf method")
-  consol.log(filterDupes(arr))
+  consol.log(filterDupes(arr2))
   consol.log("filter hash method")
-  consol.log(filterHashDupes(arr))
-  consol.log("hashtable approach -sorts as well")
-  consol.log(hashDupes(arr))
+  consol.log(filterHashDupes(arr3))
+  consol.log("hashtable approach")
+  consol.log(hashDupes(arr4))
+
+  consol.log("<h4>separate neg pos in ["+arr4+"]</h4>")
+  consol.log("<h5>multiple data structs</h5>")
+  consol.log(sepNegPos(arr5))
+  consol.log("<h5>in place</h5>")
+  consol.log(sepNegPos2(arr6))
+
+  consol.log("<h4>fibonacci Array</h4>")
   consol.log("fibonacci array")
   consol.log(fibob(10))
 }
@@ -239,11 +285,14 @@ you could store the indexes of each array item in the `:value`
         var iarr =[]
         iarr.push(i)
         du[arr[i]]=iarr;
-      } 
-
+      }
+</sb-md>       
+<sb-md>
 #### fibonacci
-*<a href="http://ariya.ofilabs.com/2013/07/prime-numbers-factorial-and-fibonacci-series-with-javascript-array.html">fibonacci with reduce</a>
-*<a href="https://www.safaribooksonline.com/library/view/javascript-the-good/9780596517748/ch04s15.html">fibonacci memoization</a>
+* <a href="http://ariya.ofilabs.com/2013/07/prime-numbers-factorial-and-fibonacci-series-with-javascript-array.html">fibonacci with reduce</a>
+* <a href="https://www.safaribooksonline.com/library/view/javascript-the-good/9780596517748/ch04s15.html">fibonacci memoization</a>
+
+
    
 
 </sb-md>	
